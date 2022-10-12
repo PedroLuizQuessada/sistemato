@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.png}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>[[${tituloPagina}]]</title>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <label></label>
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <input class="btn btn-danger" style="margin-right: 90%" type="submit" value="Deslogar">
+        </form>
+    </div>
+
+    <div class="m-2">
+        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" th:href="@{/voltar/automacao}">Voltar</a>
+    </div>
+
+    <div>
+        <h1>[[${tituloPagina}]]</h1>
+    </div>
+
+    <!--/*@thymesVar id="mensagemErro" type="java.lang.String"*/-->
+    <div th:if="${mensagemErro}" class="alert alert-warning alert-dismissible text-center" role="alert">
+        <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+        [[${mensagemErro}]]
+    </div>
+
+    <form th:action="@{/automacoes/salvar}" method="post" th:object="${automacao}" style="max-width: 500px; margin: 0 auto">
+        <div class="border border-secondary rounded p-3">
+            <input id="id" type="hidden" th:field="*{id}">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="nome">Nome:</label>
+                <div class="col-sm-8">
+                    <input id="nome" type="text" th:field="*{nome}" class="form-control" required minlength="2" maxlength="45"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="descricao">Descrição:</label>
+                <div class="col-sm-8">
+                    <textarea style="resize: none;" id="descricao" type="text" th:field="*{descricao}" class="form-control" maxlength="255"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="ativo">Ativo:</label>
+                <div class="col-sm-8">
+                    <input id="ativo" type="checkbox" th:field="*{ativo}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Dias de execução:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="domingo">Domingo</label>
+                    <input id="domingo" type="checkbox" th:field="*{domingo}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="segunda">Segunda</label>
+                    <input id="segunda" type="checkbox" th:field="*{segunda}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="terca">Terça</label>
+                    <input id="terca" type="checkbox" th:field="*{terca}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="quarta">Quarta</label>
+                    <input id="quarta" type="checkbox" th:field="*{quarta}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="quinta">Quinta</label>
+                    <input id="quinta" type="checkbox" th:field="*{quinta}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="sexta">Sexta</label>
+                    <input id="sexta" type="checkbox" th:field="*{sexta}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <label class="col-sm-4 col-form-label" for="sabado">Sábado</label>
+                    <input id="sabado" type="checkbox" th:field="*{sabado}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="horarioInicio">Horário de início:</label>
+                <div class="col-sm-8">
+                    <input id="horarioInicio" type="text" th:field="*{horarioInicio}" class="form-control" pattern="[0-9]{2}:[0-9]{2}" placeholder="Exemplo: 07:30" title="Exemplo: 07:30"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="horarioFim">Horário fim:</label>
+                <div class="col-sm-8">
+                    <input id="horarioFim" type="text" th:field="*{horarioFim}" class="form-control" pattern="[0-9]{2}:[0-9]{2}" placeholder="Exemplo: 07:30" title="Exemplo: 07:30"/>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary m-2">Salvar</button>
+            </div>
+        </div>
+        <label></label>
+    </form>
+</div>
+</body>
+</html>
