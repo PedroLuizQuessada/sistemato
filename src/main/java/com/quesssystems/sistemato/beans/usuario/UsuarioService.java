@@ -31,18 +31,6 @@ public class UsuarioService {
         }
     }
 
-    public boolean blockToggle(Integer id) throws UsuarioNaoEncontradoException {
-        Usuario usuario = get(id);
-        if (usuario.getTentativasAcesso() == 3) {
-            usuario.setTentativasAcesso(0);
-        }
-        else {
-            usuario.setTentativasAcesso(3);
-        }
-        usuarioRepository.save(usuario);
-        return usuario.getTentativasAcesso() == 3;
-    }
-
     public boolean admToggle(Integer id) throws UsuarioNaoEncontradoException {
         Usuario usuario = get(id);
         usuario.setAdm(!usuario.isAdm());

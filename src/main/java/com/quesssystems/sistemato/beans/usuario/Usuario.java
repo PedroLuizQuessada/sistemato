@@ -15,9 +15,6 @@ public class Usuario {
     @Column(nullable = false, length = 64)
     private String senha;
 
-    @Column(nullable = false, name = "tentativas_acesso")
-    private Integer tentativasAcesso;
-
     @Column(nullable = false)
     private boolean adm;
 
@@ -43,14 +40,6 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public Integer getTentativasAcesso() {
-        return tentativasAcesso;
-    }
-
-    public void setTentativasAcesso(Integer tentativasAcesso) {
-        this.tentativasAcesso = tentativasAcesso;
     }
 
     public boolean isAdm() {

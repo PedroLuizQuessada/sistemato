@@ -34,7 +34,7 @@ public class CustomUsuarioDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return usuario.getTentativasAcesso() < 3;
+        return true;
     }
 
     @Override

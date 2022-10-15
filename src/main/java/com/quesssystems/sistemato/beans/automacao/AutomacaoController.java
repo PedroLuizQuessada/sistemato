@@ -80,9 +80,9 @@ public class AutomacaoController {
         }
 
         try {
-            boolean bloqueado = automacaoService.ativoToggle(id);
+            boolean ativada = automacaoService.ativoToggle(id);
             String mensagem = "A automação %d foi ativada";
-            if (!bloqueado) {
+            if (!ativada) {
                 mensagem = "A automação %d foi inativada";
             }
             ra.addFlashAttribute("mensagemSucesso", String.format(mensagem, id));

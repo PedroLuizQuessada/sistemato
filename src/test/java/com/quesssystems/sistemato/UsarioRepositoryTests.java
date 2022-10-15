@@ -24,7 +24,6 @@ public class UsarioRepositoryTests {
         Usuario usuario = new Usuario();
         usuario.setEmail("pedroluiz.quessada@gmail.com");
         usuario.setSenha(SenhaUtil.criptografar(senha));
-        usuario.setTentativasAcesso(0);
         usuario.setAdm(true);
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);

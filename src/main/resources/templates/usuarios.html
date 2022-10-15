@@ -56,8 +56,6 @@
                     <td>[[${usuario.email}]]</td>
                     <td>
                         <a class="btn btn-primary" th:href="@{'/usuarios/consultar/' + ${usuario.id}}">Consultar</a>
-                        <a th:if="${usuario.tentativasAcesso} < 3" class="btn btn-primary" th:href="@{'/usuarios/blocktoggle/' + ${usuario.id}}">Bloquear</a>
-                        <a th:if="${usuario.tentativasAcesso} == 3" class="btn btn-primary" th:href="@{'/usuarios/blocktoggle/' + ${usuario.id}}">Desbloquear</a>
                         <a th:if="${usuario.adm}" class="btn btn-primary" th:href="@{'/usuarios/admtoggle/' + ${usuario.id}}">Retirar ADM</a>
                         <a th:if="${!usuario.adm}" class="btn btn-primary" th:href="@{'/usuarios/admtoggle/' + ${usuario.id}}">Tornar ADM</a>
                         <a class="btn btn-primary" th:href="@{'/usuarios/excluir/' + ${usuario.id}}">Deletar</a>

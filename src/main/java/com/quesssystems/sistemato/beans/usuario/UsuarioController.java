@@ -62,31 +62,6 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/usuarios/blocktoggle/{id}")
-    public String blockToggleUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
-        try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
-                return "redirect:/automacoes/true?acessonegado";
-            }
-        }
-        catch (UsuarioNaoEncontradoException e) {
-            return "redirect:/login?sessaoexpirada";
-        }
-
-        try {
-            boolean bloqueado = usuarioService.blockToggle(id);
-            String mensagem = "O usuário %d foi bloqueado";
-            if (!bloqueado) {
-                mensagem = "O usuário %d foi desbloqueado";
-            }
-            ra.addFlashAttribute("mensagemSucesso", String.format(mensagem, id));
-        }
-        catch (UsuarioNaoEncontradoException e) {
-            ra.addFlashAttribute("mensagemErro", e.getMessage());
-        }
-        return "redirect:/usuarios";
-    }
-
     @GetMapping("/usuarios/admtoggle/{id}")
     public String admToggleUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
@@ -184,13 +159,6 @@ public class UsuarioController {
         }
 
         try {
-            if (novoUsuario) {
-                usuario.setTentativasAcesso(0);
-            }
-            else {
-                usuario.setTentativasAcesso(usuarioService.get(usuario.getId()).getTentativasAcesso());
-            }
-
             usuarioService.save(usuario);
             ra.addFlashAttribute("mensagemSucesso", "O usuário foi salvo com sucesso");
         }
