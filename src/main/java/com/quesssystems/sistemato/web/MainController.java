@@ -1,11 +1,13 @@
 package com.quesssystems.sistemato.web;
 
+import automacao.AutomacaoApi;
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import com.quesssystems.sistemato.beans.automacao.AutomacaoRepository;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioRepository;
 import com.quesssystems.sistemato.util.EmailUtil;
 import com.quesssystems.sistemato.util.SenhaUtil;
+import enums.StatusEnum;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,28 +85,16 @@ public class MainController {
 
     @GetMapping("/recuperardados/{idAutomacao}")
     @ResponseBody
-    public Map<String, String> recuperarDados(@PathVariable("idAutomacao") Integer idAutomacao) {
-        Map<String, String> dados = new HashMap<>();
-
+    public AutomacaoApi recuperarDados(@PathVariable("idAutomacao") Integer idAutomacao) {
         Optional<Automacao> optionalAutomacao = automacaoRepository.findById(idAutomacao);
         if (optionalAutomacao.isPresent()) {
             Automacao automacao = optionalAutomacao.get();
-            dados.put("status", String.format("Automação %d encontrada", idAutomacao));
-            dados.put("ativo", String.valueOf(automacao.isAtivo()));
-            dados.put("domingo", String.valueOf(automacao.isDomingo()));
-            dados.put("segunda", String.valueOf(automacao.isSegunda()));
-            dados.put("terca", String.valueOf(automacao.isTerca()));
-            dados.put("quarta", String.valueOf(automacao.isQuarta()));
-            dados.put("quinta", String.valueOf(automacao.isQuinta()));
-            dados.put("sexta", String.valueOf(automacao.isSexta()));
-            dados.put("sabado", String.valueOf(automacao.isSabado()));
-            dados.put("horario-inicio", automacao.getHorarioInicio());
-            dados.put("horario-fim", automacao.getHorarioFim());
+            return new AutomacaoApi(idAutomacao, StatusEnum.OK, automacao.isAtivo(), automacao.isDomingo(),
+                    automacao.isSegunda(), automacao.isTerca(), automacao.isQuarta(), automacao.isQuinta(),
+                    automacao.isSexta(), automacao.isSabado(), automacao.getHorarioInicio(), automacao.getHorarioFim());
         }
         else {
-            dados.put("status", String.format("Automação %d não encontrada", idAutomacao));
+            return new AutomacaoApi(StatusEnum.NAOENCONTRADO);
         }
-
-        return dados;
     }
 }
