@@ -18,8 +18,4 @@ public class ExecucaoService {
         execucoes.removeIf(execucao -> execucao.getAutomacao() != automacao);
         return execucoes;
     }
-
-    public void save(Execucao execucao) {
-        execucaoRepository.save(execucao);
-    }
 }
