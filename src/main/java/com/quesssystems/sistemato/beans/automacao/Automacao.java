@@ -1,6 +1,9 @@
 package com.quesssystems.sistemato.beans.automacao;
 
+import com.quesssystems.sistemato.beans.execucao.Execucao;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "automacao")
@@ -44,6 +47,12 @@ public class Automacao {
 
     @Column(name = "horario_fim")
     private String horarioFim;
+
+    @Column(name = "falha")
+    private String falha;
+
+    @OneToMany(mappedBy="automacao")
+    private Set<Execucao> execucoes;
 
     public Integer getId() {
         return id;
@@ -147,5 +156,21 @@ public class Automacao {
 
     public void setHorarioFim(String horarioFim) {
         this.horarioFim = horarioFim;
+    }
+
+    public String getFalha() {
+        return falha;
+    }
+
+    public void setFalha(String falha) {
+        this.falha = falha;
+    }
+
+    public Set<Execucao> getExecucoes() {
+        return execucoes;
+    }
+
+    public void setExecucoes(Set<Execucao> execucoes) {
+        this.execucoes = execucoes;
     }
 }

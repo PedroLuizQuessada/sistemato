@@ -1,5 +1,6 @@
 package com.quesssystems.sistemato.beans.automacao;
 
+import com.quesssystems.sistemato.beans.execucao.ExecucaoService;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioService;
 import com.quesssystems.sistemato.exceptions.AutomacaoNaoEncontradaException;
@@ -24,9 +25,12 @@ public class AutomacaoController {
     private final AutomacaoService automacaoService;
     private final UsuarioService usuarioService;
 
-    public AutomacaoController(AutomacaoService automacaoService, UsuarioService usuarioService) {
+    private final ExecucaoService execucaoService;
+
+    public AutomacaoController(AutomacaoService automacaoService, UsuarioService usuarioService, ExecucaoService execucaoService) {
         this.automacaoService = automacaoService;
         this.usuarioService = usuarioService;
+        this.execucaoService = execucaoService;
     }
 
     @GetMapping("/automacoes/{ativo}")
@@ -62,6 +66,7 @@ public class AutomacaoController {
 
             model.addAttribute("tituloPagina", String.format("Automação %d", automacao.getId()));
             model.addAttribute("automacao", automacao);
+            model.addAttribute("execucoes", execucaoService.listAll(automacao));
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {
