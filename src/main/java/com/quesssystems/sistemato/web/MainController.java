@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import util.AutomacaoApiUtil;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +107,7 @@ public class MainController {
     public AutomacaoApi registrarFalha(@PathVariable("idAutomacao") Integer idAutomacao, @PathVariable("falha") String falha) {
         Optional<Automacao> optionalAutomacao = automacaoRepository.findById(idAutomacao);
         if (optionalAutomacao.isPresent()) {
+            falha = AutomacaoApiUtil.converterMensagemDaRequisicao(falha);
             Automacao automacao = optionalAutomacao.get();
             automacao.setFalha(falha);
             automacaoRepository.save(automacao);
