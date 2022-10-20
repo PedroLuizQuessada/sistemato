@@ -1,5 +1,6 @@
 package com.quesssystems.sistemato.beans.automacao;
 
+import com.quesssystems.sistemato.beans.execucao.Execucao;
 import com.quesssystems.sistemato.beans.execucao.ExecucaoService;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
 
 @Controller
 public class AutomacaoController {
@@ -132,6 +135,7 @@ public class AutomacaoController {
         if (usuarioLogado.isAdm()) {
             model.addAttribute("automacao", new Automacao());
             model.addAttribute("tituloPagina", "Adicionar automação");
+            model.addAttribute("execucoes", new ArrayList<Execucao>());
             return "automacao";
         }
         else {
