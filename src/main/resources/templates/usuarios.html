@@ -56,9 +56,9 @@
                     <td>[[${usuario.email}]]</td>
                     <td>
                         <a class="btn btn-primary" th:href="@{'/usuarios/consultar/' + ${usuario.id}}">Consultar</a>
-                        <a th:if="${usuario.adm}" class="btn btn-primary" th:href="@{'/usuarios/admtoggle/' + ${usuario.id}}">Retirar ADM</a>
+                        <a th:if="${usuario.adm && usuario.id > 1}" class="btn btn-primary" th:href="@{'/usuarios/admtoggle/' + ${usuario.id}}">Retirar ADM</a>
                         <a th:if="${!usuario.adm}" class="btn btn-primary" th:href="@{'/usuarios/admtoggle/' + ${usuario.id}}">Tornar ADM</a>
-                        <a class="btn btn-primary" th:href="@{'/usuarios/excluir/' + ${usuario.id}}">Deletar</a>
+                        <a th:if="${usuario.id} > 1" class="btn btn-primary" th:href="@{'/usuarios/excluir/' + ${usuario.id}}">Deletar</a>
                     </td>
                 </tr>
             </th:block>

@@ -65,7 +65,7 @@ public class UsuarioController {
     @GetMapping("/usuarios/admtoggle/{id}")
     public String admToggleUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            if (!usuarioService.getUsuarioLogado().isAdm() || id == 1) {
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -90,7 +90,7 @@ public class UsuarioController {
     @GetMapping("/usuarios/excluir/{id}")
     public String excluirUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            if (!usuarioService.getUsuarioLogado().isAdm() || id == 1) {
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -159,6 +159,9 @@ public class UsuarioController {
         }
 
         try {
+            if (usuario.getId() != null && usuario.getId() == 1) {
+                usuario.setAdm(true);
+            }
             usuarioService.save(usuario);
             ra.addFlashAttribute("mensagemSucesso", "O usuário foi salvo com sucesso");
         }
