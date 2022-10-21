@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class AutomacaoController {
@@ -69,7 +71,9 @@ public class AutomacaoController {
 
             model.addAttribute("tituloPagina", String.format("Automação %d", automacao.getId()));
             model.addAttribute("automacao", automacao);
-            model.addAttribute("execucoes", execucaoService.listAll(automacao));
+            List<Execucao> execucoes = execucaoService.listAll(automacao);
+            Collections.reverse(execucoes);
+            model.addAttribute("execucoes", execucoes);
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {

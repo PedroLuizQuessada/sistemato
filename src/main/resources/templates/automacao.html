@@ -131,8 +131,7 @@
         <div class="modal-dialog">
             <div class="modal-content text-center">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title text-center" th:if="${execucoes.size()} > 0">Execuções registradas para essa automação</h4>
-                    <h4 class="modal-title text-center" th:if="${execucoes.size()} == 0">Não foram encontradas execuções para essa automação</h4>
+                    <h4 class="modal-title text-center">Foram encontradas [[${execucoes.size()}]] execuções para essa automação</h4>
                 </div>
 
                 <table class="table table-bordered" th:if="${execucoes.size()} > 0">
