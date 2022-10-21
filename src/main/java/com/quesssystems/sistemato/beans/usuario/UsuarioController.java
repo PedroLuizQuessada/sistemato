@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -176,5 +179,23 @@ public class UsuarioController {
             }
         }
         return "redirect:/usuarios";
+    }
+
+    @PostMapping("/alterarsenha")
+    public String alterarSenha(HttpServletRequest request, RedirectAttributes ra) {
+        Usuario usuarioLogado;
+        try {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+        }
+        catch (UsuarioNaoEncontradoException e) {
+            return "redirect:/login?sessaoexpirada";
+        }
+
+        String senha = SenhaUtil.criptografar(request.getParameter("senha"));
+        usuarioLogado.setSenha(senha);
+        usuarioService.save(usuarioLogado);
+        ra.addFlashAttribute("mensagemSucesso", "Senha atualizada com sucesso");
+
+        return "redirect:/automacoes/true";
     }
 }

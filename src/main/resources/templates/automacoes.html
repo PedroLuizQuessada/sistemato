@@ -18,6 +18,10 @@
         </form>
     </div>
 
+    <div class="m-2">
+        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" data-toggle="modal" data-target="#alterarSenha">Alterar senha</a>
+    </div>
+
     <div class="m-2" th:if="${adm}">
         <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" th:href="@{/usuarios}">Gerenciar usuários</a>
         <br>
@@ -76,6 +80,29 @@
             </th:block>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="alterarSenha" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title text-center">Informe sua nova senha</h4>
+                </div>
+                <form th:action="@{/alterarsenha}" method="post" style="max-width: 350px; margin: 0 auto">
+                    <div class="modal-body">
+                        <p>
+                            <input type="password" name="senha" class="form-control" placeholder="Nova senha" required autofocus minlength="3" maxlength="64">
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Alterar" class="btn btn-primary">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
