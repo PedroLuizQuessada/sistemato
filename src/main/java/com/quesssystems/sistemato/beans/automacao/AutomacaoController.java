@@ -117,6 +117,7 @@ public class AutomacaoController {
         }
 
         try {
+            execucaoService.deleteByAutomacao(automacaoService.get(id));
             automacaoService.delete(id);
             ra.addFlashAttribute("mensagemSucesso", String.format("A automação %d foi deletada", id));
         }

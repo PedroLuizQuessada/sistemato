@@ -18,4 +18,9 @@ public class ExecucaoService {
         execucoes.removeIf(execucao -> execucao.getAutomacao() != automacao);
         return execucoes;
     }
+
+    public void deleteByAutomacao(Automacao automacao) {
+        List<Execucao> execucoes = listAll(automacao);
+        execucaoRepository.deleteAll(execucoes);
+    }
 }
