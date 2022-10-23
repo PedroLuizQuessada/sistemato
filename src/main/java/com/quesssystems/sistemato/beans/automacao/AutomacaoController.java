@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 public class AutomacaoController {
 
-    @Value("${server.link}")
+    @Value("${servidor.link}")
     private String servidorLink;
 
     @Value("${server.servlet.context-path}")
