@@ -19,9 +19,11 @@
 -- Table structure for table `automacao`
 --
 
+use heroku_81c6c03ab972635;
+
 DROP TABLE IF EXISTS `automacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `automacao` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ativo` bit(1) NOT NULL,
@@ -39,7 +41,7 @@ CREATE TABLE `automacao` (
   `terca` bit(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_6ndfq6ol0xig16m6ny676ifiq` (`nome`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +59,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `execucao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `execucao` (
   `id` int NOT NULL AUTO_INCREMENT,
   `hora_execucao` datetime(6) NOT NULL,
@@ -65,7 +67,7 @@ CREATE TABLE `execucao` (
   PRIMARY KEY (`id`),
   KEY `FKc1e31hseyl78gnq89tryqexyl` (`id_automacao`),
   CONSTRAINT `FKc1e31hseyl78gnq89tryqexyl` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +85,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
   `adm` bit(1) NOT NULL,
@@ -91,7 +93,7 @@ CREATE TABLE `usuarios` (
   `senha` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_kfsp0s1tflm1cwlj8idhqsad0` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
