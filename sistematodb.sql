@@ -19,11 +19,9 @@
 -- Table structure for table `automacao`
 --
 
-use heroku_9cf4c25d5e5433a;
-
 DROP TABLE IF EXISTS `automacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `automacao` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ativo` bit(1) NOT NULL,
@@ -41,7 +39,7 @@ CREATE TABLE `automacao` (
   `terca` bit(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_6ndfq6ol0xig16m6ny676ifiq` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +48,6 @@ CREATE TABLE `automacao` (
 
 LOCK TABLES `automacao` WRITE;
 /*!40000 ALTER TABLE `automacao` DISABLE KEYS */;
-INSERT INTO `automacao` VALUES (1,_binary '','Envio de mensagens de texto e imagens pelo WhatsApp',_binary '\0',NULL,NULL,NULL,'Mensagens Whats',_binary '\0',_binary '\0',_binary '\0',_binary '\0',_binary '\0',_binary '\0');
 /*!40000 ALTER TABLE `automacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +57,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `execucao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `execucao` (
   `id` int NOT NULL AUTO_INCREMENT,
   `hora_execucao` datetime(6) NOT NULL,
@@ -68,7 +65,7 @@ CREATE TABLE `execucao` (
   PRIMARY KEY (`id`),
   KEY `FKc1e31hseyl78gnq89tryqexyl` (`id_automacao`),
   CONSTRAINT `FKc1e31hseyl78gnq89tryqexyl` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +74,6 @@ CREATE TABLE `execucao` (
 
 LOCK TABLES `execucao` WRITE;
 /*!40000 ALTER TABLE `execucao` DISABLE KEYS */;
-INSERT INTO `execucao` VALUES (1,'2022-10-21 12:09:13.396000',1);
 /*!40000 ALTER TABLE `execucao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +83,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
   `adm` bit(1) NOT NULL,
@@ -95,7 +91,7 @@ CREATE TABLE `usuarios` (
   `senha` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_kfsp0s1tflm1cwlj8idhqsad0` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +100,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$QYJSTqlh4jTrfqvyU.i2dOopv4VABH0oOct2y9Q.cyON6W62sOPj2'),(3,_binary '\0','moraes.jjoyce@gmail.com','$2a$10$/DXdLWpLIpoIrtAhzPSyfu5sddMdkWj9yF5kbdzjggEW9kqYJ0o1G');
+INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$pcK1TjF/n9wkPAWWrzZaXO1O79jXXHikRM9P1Ud7VcscB8zYBfZqu');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -117,4 +113,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-22  1:55:59
+-- Dump completed on 2022-10-26 10:58:33
