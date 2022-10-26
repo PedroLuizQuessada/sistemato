@@ -74,7 +74,7 @@
                         <a class="btn btn-primary" th:href="@{'/automacoes/consultar/' + ${automacao.id}}">Consultar</a>
                         <a th:if="${automacao.ativo}" class="btn btn-primary" th:href="@{'/automacoes/ativotoggle/' + ${automacao.id}}">Inativar</a>
                         <a th:if="${!automacao.ativo}" class="btn btn-primary" th:href="@{'/automacoes/ativotoggle/' + ${automacao.id}}">Ativar</a>
-                        <a class="btn btn-primary" th:href="@{'/automacoes/excluir/' + ${automacao.id}}">Excluir</a>
+                        <a th:if="${adm}" class="btn btn-primary" th:href="@{'/automacoes/excluir/' + ${automacao.id}}">Excluir</a>
                     </td>
                 </tr>
             </th:block>
