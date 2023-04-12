@@ -54,13 +54,13 @@ LOCK TABLES `automacao` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `execucao`
+-- Table structure for table `log`
 --
 
-DROP TABLE IF EXISTS `execucao`;
+DROP TABLE IF EXISTS `log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8 */;
-CREATE TABLE `execucao` (
+CREATE TABLE `log` (
   `id` int NOT NULL AUTO_INCREMENT,
   `hora_execucao` datetime(6) NOT NULL,
   `id_automacao` int NOT NULL,
@@ -71,12 +71,12 @@ CREATE TABLE `execucao` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `execucao`
+-- Dumping data for table `log`
 --
 
-LOCK TABLES `execucao` WRITE;
-/*!40000 ALTER TABLE `execucao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `execucao` ENABLE KEYS */;
+LOCK TABLES `log` WRITE;
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

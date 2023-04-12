@@ -2,8 +2,8 @@ package com.quesssystems.sistemato;
 
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import com.quesssystems.sistemato.beans.automacao.AutomacaoRepository;
-import com.quesssystems.sistemato.beans.execucao.Execucao;
-import com.quesssystems.sistemato.beans.execucao.ExecucaoRepository;
+import com.quesssystems.sistemato.beans.log.Log;
+import com.quesssystems.sistemato.beans.log.LogRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,9 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
-public class ExecucaoRepositoryTests {
+public class LogRepositoryTests {
     @Autowired
-    private ExecucaoRepository execucaoRepository;
+    private LogRepository logRepository;
 
     @Autowired
     private AutomacaoRepository automacaoRepository;
@@ -30,12 +30,12 @@ public class ExecucaoRepositoryTests {
         Assertions.assertThat(optionalAutomacao.isPresent()).isEqualTo(true);
         Automacao automacao = optionalAutomacao.get();
 
-        Execucao execucao = new Execucao();
-        execucao.setAutomacao(automacao);
-        execucao.setHoraExecucao(new Timestamp(System.currentTimeMillis()));
-        Execucao execucaoSalva = execucaoRepository.save(execucao);
+        Log log = new Log();
+        log.setAutomacao(automacao);
+        log.setHora(new Timestamp(System.currentTimeMillis()));
+        Log logSalva = logRepository.save(log);
 
-        Assertions.assertThat(execucaoSalva.getId()).isNotNull();
-        Assertions.assertThat(execucaoSalva.getId()).isGreaterThan(0);
+        Assertions.assertThat(logSalva.getId()).isNotNull();
+        Assertions.assertThat(logSalva.getId()).isGreaterThan(0);
     }
 }

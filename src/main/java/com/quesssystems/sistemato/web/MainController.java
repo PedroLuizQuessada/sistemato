@@ -1,10 +1,13 @@
 package com.quesssystems.sistemato.web;
 
 import automacao.AutomacaoApi;
+import automacao.Requisicao;
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import com.quesssystems.sistemato.beans.automacao.AutomacaoRepository;
-import com.quesssystems.sistemato.beans.execucao.Execucao;
-import com.quesssystems.sistemato.beans.execucao.ExecucaoRepository;
+import com.quesssystems.sistemato.beans.log.Log;
+import com.quesssystems.sistemato.beans.log.LogRepository;
+import com.quesssystems.sistemato.beans.token.Token;
+import com.quesssystems.sistemato.beans.token.TokenRepository;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioRepository;
 import com.quesssystems.sistemato.util.EmailUtil;
@@ -14,11 +17,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import util.AutomacaoApiUtil;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +29,15 @@ import java.util.Optional;
 public class MainController {
     private final UsuarioRepository usuarioRepository;
     private final AutomacaoRepository automacaoRepository;
-    private final ExecucaoRepository execucaoRepository;
+    private final LogRepository logRepository;
+    private final TokenRepository tokenRepository;
     private final EmailUtil emailUtil;
 
-    public MainController(UsuarioRepository usuarioRepository, AutomacaoRepository automacaoRepository, ExecucaoRepository execucaoRepository, EmailUtil emailUtil) {
+    public MainController(UsuarioRepository usuarioRepository, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, EmailUtil emailUtil) {
         this.usuarioRepository = usuarioRepository;
         this.automacaoRepository = automacaoRepository;
-        this.execucaoRepository = execucaoRepository;
+        this.logRepository = logRepository;
+        this.tokenRepository = tokenRepository;
         this.emailUtil = emailUtil;
     }
 
@@ -78,7 +79,12 @@ public class MainController {
             case "usuario":
                 return "redirect:/usuarios";
 
+            case "token":
+                return "redirect:/tokens/true";
+
             case "usuarios":
+
+            case "tokens":
 
             case "automacao":
 
@@ -87,52 +93,54 @@ public class MainController {
         }
     }
 
-    @GetMapping("/recuperardados/{idAutomacao}")
+    @PostMapping("/recuperardados")
     @ResponseBody
-    public AutomacaoApi recuperarDados(@PathVariable("idAutomacao") Integer idAutomacao) {
-        Optional<Automacao> optionalAutomacao = automacaoRepository.findById(idAutomacao);
-        if (optionalAutomacao.isPresent()) {
-            Automacao automacao = optionalAutomacao.get();
-            return new AutomacaoApi(StatusEnum.OK, automacao.isAtivo(), automacao.isDomingo(),
-                    automacao.isSegunda(), automacao.isTerca(), automacao.isQuarta(), automacao.isQuinta(),
-                    automacao.isSexta(), automacao.isSabado(), automacao.getHorarioInicio(), automacao.getHorarioFim());
+    public AutomacaoApi recuperarDados(@RequestBody Requisicao requisicao) {
+        AutomacaoApi automacaoApi = identificarToken(requisicao.getToken());
+        if (automacaoApi.getStatus().equals(StatusEnum.TOKENINVALIDO)) {
+            return automacaoApi;
+        }
+
+        return identificarAutomacao(requisicao.getIdAutomacao());
+    }
+
+    @PostMapping("/registrarlog")
+    @ResponseBody
+    public AutomacaoApi registrarLog(@RequestBody Requisicao requisicao) {
+        AutomacaoApi automacaoApi = identificarToken(requisicao.getToken());
+        if (automacaoApi.getStatus().equals(StatusEnum.TOKENINVALIDO)) {
+            return automacaoApi;
+        }
+
+        automacaoApi = identificarAutomacao(requisicao.getIdAutomacao());
+        if (automacaoApi.getStatus().equals(StatusEnum.OK)) {
+            if (requisicao.getMensagem() == null || requisicao.getMensagem().length() == 0) {
+                automacaoApi = new AutomacaoApi(StatusEnum.MENSAGEM_INVALIDA);
+            }
+            Automacao automacao = automacaoRepository.findById(requisicao.getIdAutomacao()).get();
+            Log log = new Log();
+            log.setAutomacao(automacao);
+            log.setHora(new Timestamp(System.currentTimeMillis()));
+            log.setMensagem(requisicao.getMensagem());
+            logRepository.save(log);
+        }
+        return automacaoApi;
+    }
+
+    private AutomacaoApi identificarToken(String codigo) {
+        Token token = tokenRepository.findByCodigo(codigo);
+        if (token == null) {
+            return new AutomacaoApi(StatusEnum.TOKENINVALIDO);
         }
         else {
-            return new AutomacaoApi(StatusEnum.NAOENCONTRADO);
+            return new AutomacaoApi(StatusEnum.OK);
         }
     }
 
-    @GetMapping("/registrarfalha/{idAutomacao}/{falha}")
-    @ResponseBody
-    public AutomacaoApi registrarFalha(@PathVariable("idAutomacao") Integer idAutomacao, @PathVariable("falha") String falha) {
-        Optional<Automacao> optionalAutomacao = automacaoRepository.findById(idAutomacao);
-        if (optionalAutomacao.isPresent()) {
-            falha = AutomacaoApiUtil.converterMensagemDaRequisicao(falha);
-            Automacao automacao = optionalAutomacao.get();
-            automacao.setFalha(falha);
-            automacaoRepository.save(automacao);
-
-            return new AutomacaoApi(StatusEnum.OK, automacao.isAtivo(), automacao.isDomingo(),
-                    automacao.isSegunda(), automacao.isTerca(), automacao.isQuarta(), automacao.isQuinta(),
-                    automacao.isSexta(), automacao.isSabado(), automacao.getHorarioInicio(), automacao.getHorarioFim());
-        }
-        else {
-            return new AutomacaoApi(StatusEnum.NAOENCONTRADO);
-        }
-    }
-
-    @GetMapping("/registrarexecucao/{idAutomacao}")
-    @ResponseBody
-    public AutomacaoApi registrarExecucao(@PathVariable("idAutomacao") Integer idAutomacao) {
+    private AutomacaoApi identificarAutomacao(Integer idAutomacao) {
         Optional<Automacao> optionalAutomacao = automacaoRepository.findById(idAutomacao);
         if (optionalAutomacao.isPresent()) {
             Automacao automacao = optionalAutomacao.get();
-
-            Execucao execucao = new Execucao();
-            execucao.setAutomacao(automacao);
-            execucao.setHoraExecucao(new Timestamp(System.currentTimeMillis()));
-            execucaoRepository.save(execucao);
-
             return new AutomacaoApi(StatusEnum.OK, automacao.isAtivo(), automacao.isDomingo(),
                     automacao.isSegunda(), automacao.isTerca(), automacao.isQuarta(), automacao.isQuinta(),
                     automacao.isSexta(), automacao.isSabado(), automacao.getHorarioInicio(), automacao.getHorarioFim());

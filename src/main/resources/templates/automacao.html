@@ -23,7 +23,7 @@
     </div>
 
     <div class="m-2">
-        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" data-toggle="modal" data-target="#consultarExecucoes">Consultar execuções</a>
+        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
     </div>
 
     <div>
@@ -127,25 +127,27 @@
 </div>
 
 <div class="container">
-    <div class="modal fade" id="consultarExecucoes" role="dialog">
+    <div class="modal fade" id="consultarLogs" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content text-center">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title text-center">Foram encontradas [[${execucoes.size()}]] execuções para essa automação</h4>
+                    <h4 class="modal-title text-center">Foram encontrados [[${logs.size()}]] logs para essa automação</h4>
                 </div>
 
-                <table class="table table-bordered" th:if="${execucoes.size()} > 0">
+                <table class="table table-bordered" th:if="${logs.size()} > 0">
                     <thead class="thead-dark">
                     <tr>
                         <th class="text-center">ID</th>
-                        <th class="text-center">Hora Execução</th>
+                        <th class="text-center">Hora</th>
+                        <th class="text-center">Mensagem</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <th:block th:each="execucao : ${execucoes}">
+                    <th:block th:each="log : ${logs}">
                         <tr>
-                            <td>[[${execucao.id}]]</td>
-                            <td>[[${execucao.horaExecucao}]]</td>
+                            <td>[[${log.id}]]</td>
+                            <td>[[${log.hora}]]</td>
+                            <td>[[${log.mensagem}]]</td>
                         </tr>
                     </th:block>
                     </tbody>

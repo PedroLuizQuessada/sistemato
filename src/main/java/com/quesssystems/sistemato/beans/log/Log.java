@@ -1,4 +1,4 @@
-package com.quesssystems.sistemato.beans.execucao;
+package com.quesssystems.sistemato.beans.log;
 
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import util.ConversorUtil;
@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 @Entity
-@Table(name = "execucao")
-public class Execucao {
+@Table(name = "log")
+public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,7 +19,10 @@ public class Execucao {
     private Automacao automacao;
 
     @Column(nullable = false)
-    private Timestamp horaExecucao;
+    private Timestamp hora;
+
+    @Column(nullable = false)
+    private String mensagem;
 
     public Integer getId() {
         return id;
@@ -37,15 +40,23 @@ public class Execucao {
         this.automacao = automacao;
     }
 
-    public String getHoraExecucao() {
-        long timestamp = horaExecucao.getTime();
+    public String getHora() {
+        long timestamp = hora.getTime();
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
 
         return ConversorUtil.getDateToString(cal, "dd/MM/yyyy HH:mm:ss");
     }
 
-    public void setHoraExecucao(Timestamp horaExecucao) {
-        this.horaExecucao = horaExecucao;
+    public void setHora(Timestamp hora) {
+        this.hora = hora;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 }

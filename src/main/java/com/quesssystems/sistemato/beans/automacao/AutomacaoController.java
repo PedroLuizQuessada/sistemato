@@ -1,7 +1,7 @@
 package com.quesssystems.sistemato.beans.automacao;
 
-import com.quesssystems.sistemato.beans.execucao.Execucao;
-import com.quesssystems.sistemato.beans.execucao.ExecucaoService;
+import com.quesssystems.sistemato.beans.log.Log;
+import com.quesssystems.sistemato.beans.log.LogService;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioService;
 import com.quesssystems.sistemato.exceptions.AutomacaoNaoEncontradaException;
@@ -30,12 +30,12 @@ public class AutomacaoController {
     private final AutomacaoService automacaoService;
     private final UsuarioService usuarioService;
 
-    private final ExecucaoService execucaoService;
+    private final LogService logService;
 
-    public AutomacaoController(AutomacaoService automacaoService, UsuarioService usuarioService, ExecucaoService execucaoService) {
+    public AutomacaoController(AutomacaoService automacaoService, UsuarioService usuarioService, LogService logService) {
         this.automacaoService = automacaoService;
         this.usuarioService = usuarioService;
-        this.execucaoService = execucaoService;
+        this.logService = logService;
     }
 
     @GetMapping("/automacoes/{ativo}")
@@ -71,9 +71,9 @@ public class AutomacaoController {
 
             model.addAttribute("tituloPagina", String.format("Automação %d", automacao.getId()));
             model.addAttribute("automacao", automacao);
-            List<Execucao> execucoes = execucaoService.listAll(automacao);
-            Collections.reverse(execucoes);
-            model.addAttribute("execucoes", execucoes);
+            List<Log> logs = logService.listAll(automacao);
+            Collections.reverse(logs);
+            model.addAttribute("logs", logs);
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {
@@ -117,7 +117,7 @@ public class AutomacaoController {
         }
 
         try {
-            execucaoService.deleteByAutomacao(automacaoService.get(id));
+            logService.deleteByAutomacao(automacaoService.get(id));
             automacaoService.delete(id);
             ra.addFlashAttribute("mensagemSucesso", String.format("A automação %d foi deletada", id));
         }
@@ -140,7 +140,7 @@ public class AutomacaoController {
         if (usuarioLogado.isAdm()) {
             model.addAttribute("automacao", new Automacao());
             model.addAttribute("tituloPagina", "Adicionar automação");
-            model.addAttribute("execucoes", new ArrayList<Execucao>());
+            model.addAttribute("logs", new ArrayList<Log>());
             return "automacao";
         }
         else {

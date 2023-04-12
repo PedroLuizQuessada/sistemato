@@ -66,5 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement()
                 .invalidSessionUrl("/login?sessaoexpirada");
+
+        http.csrf().disable();
     }
 }

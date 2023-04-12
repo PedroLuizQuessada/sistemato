@@ -1,6 +1,6 @@
 package com.quesssystems.sistemato.beans.automacao;
 
-import com.quesssystems.sistemato.beans.execucao.Execucao;
+import com.quesssystems.sistemato.beans.log.Log;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -48,11 +48,8 @@ public class Automacao {
     @Column(name = "horario_fim")
     private String horarioFim;
 
-    @Column(name = "falha")
-    private String falha;
-
     @OneToMany(mappedBy="automacao")
-    private Set<Execucao> execucoes;
+    private Set<Log> logs;
 
     public Integer getId() {
         return id;
@@ -158,19 +155,11 @@ public class Automacao {
         this.horarioFim = horarioFim;
     }
 
-    public String getFalha() {
-        return falha;
+    public Set<Log> getLogs() {
+        return logs;
     }
 
-    public void setFalha(String falha) {
-        this.falha = falha;
-    }
-
-    public Set<Execucao> getExecucoes() {
-        return execucoes;
-    }
-
-    public void setExecucoes(Set<Execucao> execucoes) {
-        this.execucoes = execucoes;
+    public void setLogs(Set<Log> logs) {
+        this.logs = logs;
     }
 }
