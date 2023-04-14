@@ -41,7 +41,6 @@ public class TokenController {
         }
 
         if (usuarioLogado.isAdm()) {
-            model.addAttribute("adm", usuarioLogado.isAdm());
             model.addAttribute("tokens", tokenService.listAll(ativo));
             model.addAttribute("ativos", ativo);
             model.addAttribute("link", servidorLink);

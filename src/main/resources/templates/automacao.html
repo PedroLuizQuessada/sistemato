@@ -7,23 +7,102 @@
     <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.png}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <title>[[${tituloPagina}]]</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Open Sans", sans-serif;
+        }
+        .menu-container{
+            position: absolute;
+            top: 5%;
+            left: 85%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button{
+            position: relative;
+            background: #1b1b1b;
+            color: white;
+            font-size: 20px;
+            padding: 8px 20px;
+            width: 150px;
+            line-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: width .4s;
+        }
+        .button.expand{
+            width: 100%;
+        }
+        ul{
+            list-style: none;
+            position: absolute;
+            top: 65px;
+            background: #1b1b1b;
+            width: 100%;
+            text-align: center;
+            border-radius: 5px;
+            display: none;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        }
+        ul:before{
+            position: absolute;
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #1b1b1b;
+            top: -10px;
+            right: 15px;
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        ul li{
+            line-height: 35px;
+            padding: 8px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+        ul li:last-child{
+            border-bottom: none;
+        }
+        ul li a{
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid text-center">
-    <label></label>
-    <div>
-        <form th:action="@{/logout}" method="post">
-            <input class="btn btn-danger" style="margin-right: 90%" type="submit" value="Deslogar">
-        </form>
-    </div>
-
-    <div class="m-2">
-        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" th:href="@{/voltar/automacao}">Voltar</a>
-    </div>
-
-    <div class="m-2">
-        <a class="btn btn-primary" style="margin-right: 90%; margin-top: 1%" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
+    <div class="menu-container">
+        <div class="button">
+            Menu
+            <span class="fas fa-bars"></span>
+        </div>
+        <ul>
+            <li><a style="text-decoration: none;" th:href="@{'/automacoes/true'}">Automações</a></li>
+            <li><a style="text-decoration: none;" th:href="@{/usuarios}">Usuários</a></li>
+            <li><a style="text-decoration: none;" th:href="@{'/tokens/true'}">Tokens</a></li>
+            <li><a style="text-decoration: none;" href="#" data-toggle="modal" data-target="#alterarSenha">Alterar senha</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <input style="color: white; font-size: 18px; background: #1b1b1b; border: #1b1b1b;" type="submit" value="Deslogar">
+                </form>
+            </li>
+        </ul>
     </div>
 
     <div>
@@ -119,6 +198,8 @@
                 </div>
             </div>
             <div class="text-center">
+                <a class="btn btn-primary" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
+                <br>
                 <button type="submit" class="btn btn-primary m-2">Salvar</button>
             </div>
         </div>
@@ -160,5 +241,48 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="modal fade" id="alterarSenha" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title text-center">Informe sua nova senha</h4>
+                </div>
+                <form th:action="@{/alterarsenha}" method="post" style="max-width: 350px; margin: 0 auto">
+                    <div class="modal-body">
+                        <p>
+                            <input type="password" name="senha" class="form-control" placeholder="Nova senha" required autofocus minlength="3" maxlength="64">
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Alterar" class="btn btn-primary">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.button').click(function(){
+            if($(this).hasClass('expand')){
+                $('ul').slideUp(function(){
+                    $('.button').removeClass('expand');
+                    $('.fas').removeClass('expand')
+                });
+            }else{
+                $(this).addClass('expand');
+                setTimeout(function(){
+                    $('.fas').addClass('expand');
+                    $('ul').stop().slideDown();
+                },200);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

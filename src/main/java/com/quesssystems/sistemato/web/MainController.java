@@ -73,26 +73,6 @@ public class MainController {
         return "redirect:/login?senharecuperada";
     }
 
-    @GetMapping("/voltar/{tela}")
-    public String voltar(@PathVariable("tela") String tela) {
-        switch (tela) {
-            case "usuario":
-                return "redirect:/usuarios";
-
-            case "token":
-                return "redirect:/tokens/true";
-
-            case "usuarios":
-
-            case "tokens":
-
-            case "automacao":
-
-            default:
-                return "redirect:/automacoes/true";
-        }
-    }
-
     @PostMapping("/recuperardados")
     @ResponseBody
     public AutomacaoApi recuperarDados(@RequestBody Requisicao requisicao) {
