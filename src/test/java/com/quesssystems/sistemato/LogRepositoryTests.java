@@ -23,19 +23,25 @@ public class LogRepositoryTests {
 
     @Autowired
     private AutomacaoRepository automacaoRepository;
+    private static final int ID_AUTOMACAO = 1;
+
+    private static final int NUM_LOGS = 1001;
 
     @Test
     public void testInsert() {
-        Optional<Automacao> optionalAutomacao = automacaoRepository.findById(1);
+        Optional<Automacao> optionalAutomacao = automacaoRepository.findById(ID_AUTOMACAO);
         Assertions.assertThat(optionalAutomacao.isPresent()).isEqualTo(true);
         Automacao automacao = optionalAutomacao.get();
 
-        Log log = new Log();
-        log.setAutomacao(automacao);
-        log.setHora(new Timestamp(System.currentTimeMillis()));
-        Log logSalva = logRepository.save(log);
+        for (int i = 0; i < NUM_LOGS; i++) {
+            Log log = new Log();
+            log.setAutomacao(automacao);
+            log.setHora(new Timestamp(System.currentTimeMillis()));
+            log.setMensagem(String.format("teste %d", i));
+            Log logSalva = logRepository.save(log);
 
-        Assertions.assertThat(logSalva.getId()).isNotNull();
-        Assertions.assertThat(logSalva.getId()).isGreaterThan(0);
+            Assertions.assertThat(logSalva.getId()).isNotNull();
+            Assertions.assertThat(logSalva.getId()).isGreaterThan(0);
+        }
     }
 }

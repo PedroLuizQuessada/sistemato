@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -71,9 +70,9 @@ public class AutomacaoController {
 
             model.addAttribute("tituloPagina", String.format("Automação %d", automacao.getId()));
             model.addAttribute("automacao", automacao);
-            List<Log> logs = logService.listAll(automacao);
-            Collections.reverse(logs);
+            List<Log> logs = logService.listUltimosRegistros(automacao);
             model.addAttribute("logs", logs);
+            model.addAttribute("numLogs", logService.listAll(automacao).size());
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {
@@ -141,6 +140,7 @@ public class AutomacaoController {
             model.addAttribute("automacao", new Automacao());
             model.addAttribute("tituloPagina", "Adicionar automação");
             model.addAttribute("logs", new ArrayList<Log>());
+            model.addAttribute("numLogs", 0);
             return "automacao";
         }
         else {
