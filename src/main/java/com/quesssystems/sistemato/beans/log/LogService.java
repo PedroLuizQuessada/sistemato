@@ -3,6 +3,7 @@ package com.quesssystems.sistemato.beans.log;
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,8 +21,14 @@ public class LogService {
         return logs;
     }
 
-    public List<Log> listUltimosRegistros(Automacao automacao) {
-        return logRepository.listUltimosRegistros(automacao.getId(), NUM_REGISTROS_LOG);
+    public List<Log> listUltimosRegistros(List<Log> logs) {
+        try {
+            Collections.reverse(logs);
+            return logs.subList(0, NUM_REGISTROS_LOG);
+        }
+        catch (IndexOutOfBoundsException e) {
+            return logs;
+        }
     }
 
     public void deleteByAutomacao(Automacao automacao) {

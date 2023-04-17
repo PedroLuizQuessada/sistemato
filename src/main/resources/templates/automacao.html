@@ -212,7 +212,8 @@
         <div class="modal-dialog">
             <div class="modal-content text-center">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title text-center">Foram encontrados [[${numLogs}]] logs para essa automação</h4>
+                    <h4 class="modal-title text-center" th:if="${numLogs} <= ${logs.size()}">Foram encontrados [[${numLogs}]] logs para essa automação.</h4>
+                    <h4 class="modal-title text-center" th:if="${numLogs} > ${logs.size()}">Foram encontrados [[${numLogs}]] logs para essa automação. Exibindo os [[${logs.size()}]] logs mais recentes.</h4>
                 </div>
 
                 <table class="table table-bordered" th:if="${numLogs} > 0">

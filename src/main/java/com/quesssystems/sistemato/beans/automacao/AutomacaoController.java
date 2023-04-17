@@ -68,11 +68,11 @@ public class AutomacaoController {
         try {
             Automacao automacao = automacaoService.get(id);
 
+            List<Log> logs = logService.listAll(automacao);
             model.addAttribute("tituloPagina", String.format("Automação %d", automacao.getId()));
             model.addAttribute("automacao", automacao);
-            List<Log> logs = logService.listUltimosRegistros(automacao);
-            model.addAttribute("logs", logs);
-            model.addAttribute("numLogs", logService.listAll(automacao).size());
+            model.addAttribute("logs", logService.listUltimosRegistros(logs));
+            model.addAttribute("numLogs", logs.size());
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {
