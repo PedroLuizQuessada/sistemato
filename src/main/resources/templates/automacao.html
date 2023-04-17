@@ -109,6 +109,12 @@
         <h1>[[${tituloPagina}]]</h1>
     </div>
 
+    <!--/*@thymesVar id="mensagemSucesso" type="java.lang.String"*/-->
+    <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible text-center" role="alert">
+        <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+        [[${mensagemSucesso}]]
+    </div>
+
     <!--/*@thymesVar id="mensagemErro" type="java.lang.String"*/-->
     <div th:if="${mensagemErro}" class="alert alert-warning alert-dismissible text-center" role="alert">
         <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
@@ -198,7 +204,9 @@
                 </div>
             </div>
             <div class="text-center">
-                <a class="btn btn-primary" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
+                <a class="btn btn-primary m-2" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
+                <br th:if="${numLogs} > 0">
+                <a th:if="${numLogs} > 0" class="btn btn-primary m-2" th:href="@{'/automacoes/apagarlogs/' + ${automacao.id}}">Apagar logs</a>
                 <br>
                 <button type="submit" class="btn btn-primary m-2">Salvar</button>
             </div>

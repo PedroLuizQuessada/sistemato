@@ -200,4 +200,24 @@ public class AutomacaoController {
         }
         return "redirect:/automacoes/true";
     }
+
+    @GetMapping("/automacoes/apagarlogs/{id}")
+    public String apagarLogsAutomacao(@PathVariable("id") Integer id, RedirectAttributes ra) {
+        try {
+            usuarioService.getUsuarioLogado();
+        }
+        catch (UsuarioNaoEncontradoException e) {
+            return "redirect:/login?sessaoexpirada";
+        }
+
+        try {
+            logService.deleteByAutomacao(automacaoService.get(id));
+            ra.addFlashAttribute("mensagemSucesso", "Os logs da automação foram apagados");
+            return String.format("redirect:/automacoes/consultar/%d", id);
+        }
+        catch (AutomacaoNaoEncontradaException e) {
+            ra.addFlashAttribute("mensagemErro", e.getMessage());
+            return "redirect:/automacoes/true";
+        }
+    }
 }
