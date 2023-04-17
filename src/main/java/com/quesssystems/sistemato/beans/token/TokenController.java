@@ -35,6 +35,7 @@ public class TokenController {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -45,18 +46,24 @@ public class TokenController {
             model.addAttribute("ativos", ativo);
             model.addAttribute("link", servidorLink);
             model.addAttribute("contextPath", servidorContextPath);
+            model.addAttribute("pagina", "tokens");
 
             return "tokens";
         }
         else {
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true?acessonegado";
         }
     }
 
     @GetMapping("/tokens/consultar/{id}")
     public String consultarToken(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -68,18 +75,24 @@ public class TokenController {
             Token token = tokenService.get(id);
             model.addAttribute("tituloPagina", String.format("Token %s", token.getNome()));
             model.addAttribute("token", token);
+            model.addAttribute("pagina", "token");
             return "token";
         }
         catch (TokenNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
+            model.addAttribute("pagina", "tokens");
             return "redirect:/tokens/true";
         }
     }
 
     @GetMapping("/tokens/ativotoggle/{id}")
-    public String ativoToggleToken(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String ativoToggleToken(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -98,13 +111,18 @@ public class TokenController {
         catch (TokenNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "tokens");
         return "redirect:/tokens/true";
     }
 
     @GetMapping("/tokens/excluir/{id}")
-    public String excluirToken(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String excluirToken(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -119,6 +137,7 @@ public class TokenController {
         catch (TokenNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "tokens");
         return "redirect:/tokens/true";
     }
 
@@ -127,6 +146,7 @@ public class TokenController {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -135,17 +155,23 @@ public class TokenController {
         if (usuarioLogado.isAdm()) {
             model.addAttribute("token", new Token());
             model.addAttribute("tituloPagina", "Adicionar token");
+            model.addAttribute("pagina", "token");
             return "token";
         }
         else {
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true?acessonegado";
         }
     }
 
     @PostMapping("/tokens/salvar")
     public String salvarToken(Token token, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -177,12 +203,15 @@ public class TokenController {
             ra.addFlashAttribute("mensagemErro", mensagemErro);
             if (novoToken) {
                 model.addAttribute("token", token);
+                model.addAttribute("pagina", "token");
                 return "redirect:/tokens/novo";
             }
             else {
+                model.addAttribute("pagina", "token");
                 return "redirect:/tokens/consultar/" + token.getId();
             }
         }
+        model.addAttribute("pagina", "tokens");
         return "redirect:/tokens/true";
     }
 }

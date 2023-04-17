@@ -39,19 +39,18 @@ public class AutomacaoController {
 
     @GetMapping("/automacoes/{ativo}")
     public String listarAutomacoes(@PathVariable("ativo") boolean ativo, Model model) {
-        Usuario usuarioLogado;
         try {
-            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioService.getUsuarioLogado().isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
         }
 
-        model.addAttribute("adm", usuarioLogado.isAdm());
         model.addAttribute("automacoes", automacaoService.listAll(ativo));
         model.addAttribute("ativos", ativo);
         model.addAttribute("link", servidorLink);
         model.addAttribute("contextPath", servidorContextPath);
+        model.addAttribute("pagina", "automacoes");
 
         return "automacoes";
     }
@@ -59,7 +58,7 @@ public class AutomacaoController {
     @GetMapping("/automacoes/consultar/{id}")
     public String consultarAutomacao(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
         try {
-            usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioService.getUsuarioLogado().isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -73,18 +72,20 @@ public class AutomacaoController {
             model.addAttribute("automacao", automacao);
             model.addAttribute("logs", logService.listUltimosRegistros(logs));
             model.addAttribute("numLogs", logs.size());
+            model.addAttribute("pagina", "automacao");
             return "automacao";
         }
         catch (AutomacaoNaoEncontradaException e) {
+            model.addAttribute("pagina", "automacoes");
             ra.addFlashAttribute("mensagemErro", e.getMessage());
             return "redirect:/automacoes/true";
         }
     }
 
     @GetMapping("/automacoes/ativotoggle/{id}")
-    public String ativoToggleAutomacao(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String ativoToggleAutomacao(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
         try {
-            usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioService.getUsuarioLogado().isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -101,13 +102,18 @@ public class AutomacaoController {
         catch (AutomacaoNaoEncontradaException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "automacoes");
         return "redirect:/automacoes/true";
     }
 
     @GetMapping("/automacoes/excluir/{id}")
-    public String excluirAutomacao(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String excluirAutomacao(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -123,6 +129,7 @@ public class AutomacaoController {
         catch (AutomacaoNaoEncontradaException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "automacoes");
         return "redirect:/automacoes/true";
     }
 
@@ -131,6 +138,7 @@ public class AutomacaoController {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -141,17 +149,22 @@ public class AutomacaoController {
             model.addAttribute("tituloPagina", "Adicionar automação");
             model.addAttribute("logs", new ArrayList<Log>());
             model.addAttribute("numLogs", 0);
+            model.addAttribute("pagina", "automacao");
             return "automacao";
         }
         else {
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true?acessonegado";
         }
     }
 
     @PostMapping("/automacoes/salvar")
     public String salvarAutomacao(Automacao automacao, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -166,9 +179,11 @@ public class AutomacaoController {
             ra.addFlashAttribute("mensagemErro", "Horário de início inválido");
             if (novaAutomacao) {
                 model.addAttribute("automacao", automacao);
+                model.addAttribute("pagina", "automacao");
                 return "redirect:/automacoes/novo";
             }
             else {
+                model.addAttribute("pagina", "automacao");
                 return "redirect:/automacoes/consultar/" + automacao.getId();
             }
         }
@@ -177,9 +192,11 @@ public class AutomacaoController {
             ra.addFlashAttribute("mensagemErro", "Horário fim inválido");
             if (novaAutomacao) {
                 model.addAttribute("automacao", automacao);
+                model.addAttribute("pagina", "automacao");
                 return "redirect:/automacoes/novo";
             }
             else {
+                model.addAttribute("pagina", "automacao");
                 return "redirect:/automacoes/consultar/" + automacao.getId();
             }
         }
@@ -192,19 +209,22 @@ public class AutomacaoController {
             ra.addFlashAttribute("mensagemErro", String.format("O nome %s já está sendo usado", automacao.getNome()));
             if (novaAutomacao) {
                 model.addAttribute("automacao", automacao);
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/novo";
             }
             else {
+                model.addAttribute("pagina", "automacao");
                 return "redirect:/automacoes/consultar/" + automacao.getId();
             }
         }
+        model.addAttribute("pagina", "automacoes");
         return "redirect:/automacoes/true";
     }
 
     @GetMapping("/automacoes/apagarlogs/{id}")
-    public String apagarLogsAutomacao(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String apagarLogsAutomacao(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
         try {
-            usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioService.getUsuarioLogado().isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -213,10 +233,12 @@ public class AutomacaoController {
         try {
             logService.deleteByAutomacao(automacaoService.get(id));
             ra.addFlashAttribute("mensagemSucesso", "Os logs da automação foram apagados");
+            model.addAttribute("pagina", "automacao");
             return String.format("redirect:/automacoes/consultar/%d", id);
         }
         catch (AutomacaoNaoEncontradaException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true";
         }
     }

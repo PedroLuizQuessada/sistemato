@@ -25,6 +25,7 @@ public class UsuarioController {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -33,17 +34,23 @@ public class UsuarioController {
         if (usuarioLogado.isAdm()) {
             List<Usuario> listUsuarios = usuarioService.listAll();
             model.addAttribute("usuarios", listUsuarios);
+            model.addAttribute("pagina", "usuarios");
             return "usuarios";
         }
         else {
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true?acessonegado";
         }
     }
 
     @GetMapping("/usuarios/consultar/{id}")
     public String consultarUsuario(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -55,18 +62,24 @@ public class UsuarioController {
             Usuario usuario = usuarioService.get(id);
             model.addAttribute("usuario", usuario);
             model.addAttribute("tituloPagina", String.format("Usuário %d", usuario.getId()));
+            model.addAttribute("pagina", "usuario");
             return "usuario";
         }
         catch (UsuarioNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
+            model.addAttribute("pagina", "usuarios");
             return "redirect:/usuarios";
         }
     }
 
     @GetMapping("/usuarios/admtoggle/{id}")
-    public String admToggleUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String admToggleUsuario(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm() || id == 1) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm() || id == 1) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -85,13 +98,18 @@ public class UsuarioController {
         catch (UsuarioNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "usuarios");
         return "redirect:/usuarios";
     }
 
     @GetMapping("/usuarios/excluir/{id}")
-    public String excluirUsuario(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    public String excluirUsuario(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm() || id == 1) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm() || id == 1) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -110,6 +128,7 @@ public class UsuarioController {
         catch (UsuarioNaoEncontradoException e) {
             ra.addFlashAttribute("mensagemErro", e.getMessage());
         }
+        model.addAttribute("pagina", "usuarios");
         return "redirect:/usuarios";
     }
 
@@ -118,6 +137,7 @@ public class UsuarioController {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -126,17 +146,23 @@ public class UsuarioController {
         if (usuarioLogado.isAdm()) {
             model.addAttribute("usuario", new Usuario());
             model.addAttribute("tituloPagina", "Adicionar usuário");
+            model.addAttribute("pagina", "usuario");
             return "usuario";
         }
         else {
+            model.addAttribute("pagina", "automacoes");
             return "redirect:/automacoes/true?acessonegado";
         }
     }
 
     @PostMapping("/usuarios/salvar")
     public String salvarUsuario(Usuario usuario, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            if (!usuarioService.getUsuarioLogado().isAdm()) {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                model.addAttribute("pagina", "automacoes");
                 return "redirect:/automacoes/true?acessonegado";
             }
         }
@@ -152,6 +178,7 @@ public class UsuarioController {
             }
             catch (UsuarioNaoEncontradoException exception) {
                 ra.addFlashAttribute("mensagemErro", exception.getMessage());
+                model.addAttribute("pagina", "usuarios");
                 return "redirect:/usuarios";
             }
         }
@@ -170,20 +197,24 @@ public class UsuarioController {
             ra.addFlashAttribute("mensagemErro", String.format("O e-mail %s já está sendo usado", usuario.getEmail()));
             if (novoUsuario) {
                 model.addAttribute("automacao", usuario);
+                model.addAttribute("pagina", "usuario");
                 return "redirect:/usuarios/novo";
             }
             else {
+                model.addAttribute("pagina", "usuario");
                 return "redirect:/usuarios/consultar/" + usuario.getId();
             }
         }
+        model.addAttribute("pagina", "usuarios");
         return "redirect:/usuarios";
     }
 
     @PostMapping("/alterarsenha")
-    public String alterarSenha(HttpServletRequest request, RedirectAttributes ra) {
+    public String alterarSenha(HttpServletRequest request, Model model, RedirectAttributes ra) {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -193,6 +224,7 @@ public class UsuarioController {
         usuarioLogado.setSenha(senha);
         usuarioService.save(usuarioLogado);
         ra.addFlashAttribute("mensagemSucesso", "Senha atualizada com sucesso");
+        model.addAttribute("pagina", "automacoes");
 
         return "redirect:/automacoes/true";
     }
