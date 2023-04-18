@@ -15,11 +15,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+use NOME_DA_DATABASE_DO_HEROKU;
+
 --
 -- Table structure for table `automacao`
 --
-
-use heroku_81c6c03ab972635;
 
 DROP TABLE IF EXISTS `automacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -29,7 +29,6 @@ CREATE TABLE `automacao` (
   `ativo` bit(1) NOT NULL,
   `descricao` varchar(255) DEFAULT NULL,
   `domingo` bit(1) NOT NULL,
-  `falha` varchar(255) DEFAULT NULL,
   `horario_fim` varchar(255) DEFAULT NULL,
   `horario_inicio` varchar(255) DEFAULT NULL,
   `nome` varchar(45) NOT NULL,
@@ -62,11 +61,12 @@ DROP TABLE IF EXISTS `log`;
 /*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `log` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `hora_execucao` datetime(6) NOT NULL,
+  `hora` datetime(6) NOT NULL,
+  `mensagem` varchar(255) NOT NULL,
   `id_automacao` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKc1e31hseyl78gnq89tryqexyl` (`id_automacao`),
-  CONSTRAINT `FKc1e31hseyl78gnq89tryqexyl` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`)
+  KEY `FKa7192wti8iimk32mfaobgmn9p` (`id_automacao`),
+  CONSTRAINT `FKa7192wti8iimk32mfaobgmn9p` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -77,6 +77,33 @@ CREATE TABLE `log` (
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `token`
+--
+
+DROP TABLE IF EXISTS `token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8 */;
+CREATE TABLE `token` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ativo` bit(1) NOT NULL,
+  `codigo` varchar(255) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_5nwvt3wjcbv384sp2je5jrwjc` (`codigo`),
+  UNIQUE KEY `UK_6ptqfcjsjx2rmgtt919olnpa` (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `token`
+--
+
+LOCK TABLES `token` WRITE;
+/*!40000 ALTER TABLE `token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `token` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -102,7 +129,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$pcK1TjF/n9wkPAWWrzZaXO1O79jXXHikRM9P1Ud7VcscB8zYBfZqu');
+INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$VNe.2Rf6OhJlqVeprVTpLeHMcTFJAHjiKw/DVhQDFg0G4oPwxDZ.S');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -115,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:58:33
+-- Dump completed on 2023-04-17 21:33:35
