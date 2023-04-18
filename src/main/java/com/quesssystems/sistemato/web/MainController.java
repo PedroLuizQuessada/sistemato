@@ -97,19 +97,23 @@ public class MainController {
             if (requisicao.getMensagem() == null || requisicao.getMensagem().length() == 0) {
                 automacaoApi = new AutomacaoApi(StatusEnum.MENSAGEM_INVALIDA);
             }
-            Automacao automacao = automacaoRepository.findById(requisicao.getIdAutomacao()).get();
-            Log log = new Log();
-            log.setAutomacao(automacao);
-            log.setHora(new Timestamp(System.currentTimeMillis()));
-            log.setMensagem(requisicao.getMensagem());
-            logRepository.save(log);
+            else {
+                Automacao automacao = automacaoRepository.findById(requisicao.getIdAutomacao()).get();
+
+                Log log = new Log();
+                log.setAutomacao(automacao);
+                log.setToken(tokenRepository.findByCodigo(requisicao.getToken()));
+                log.setHora(new Timestamp(System.currentTimeMillis()));
+                log.setMensagem(requisicao.getMensagem());
+                logRepository.save(log);
+            }
         }
         return automacaoApi;
     }
 
     private AutomacaoApi identificarToken(String codigo) {
         Token token = tokenRepository.findByCodigo(codigo);
-        if (token == null) {
+        if (token == null || !token.isAtivo()) {
             return new AutomacaoApi(StatusEnum.TOKENINVALIDO);
         }
         else {

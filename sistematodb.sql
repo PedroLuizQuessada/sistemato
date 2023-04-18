@@ -64,9 +64,12 @@ CREATE TABLE `log` (
   `hora` datetime(6) NOT NULL,
   `mensagem` varchar(255) NOT NULL,
   `id_automacao` int NOT NULL,
+  `id_token` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKa7192wti8iimk32mfaobgmn9p` (`id_automacao`),
-  CONSTRAINT `FKa7192wti8iimk32mfaobgmn9p` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`)
+  KEY `FKrljjcfy1mlpgfotr7pfy8r75m` (`id_token`),
+  CONSTRAINT `FKa7192wti8iimk32mfaobgmn9p` FOREIGN KEY (`id_automacao`) REFERENCES `automacao` (`id`),
+  CONSTRAINT `FKrljjcfy1mlpgfotr7pfy8r75m` FOREIGN KEY (`id_token`) REFERENCES `token` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -129,7 +132,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$VNe.2Rf6OhJlqVeprVTpLeHMcTFJAHjiKw/DVhQDFg0G4oPwxDZ.S');
+INSERT INTO `usuarios` VALUES (1,_binary '','pedroluiz.quessada@gmail.com','$2a$10$8P1ultQcavmFFjEdpLZKG.wFoe.WJZiTIrJPXnmboNS1EfKSLflRe');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -142,4 +145,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-17 21:33:35
+-- Dump completed on 2023-04-18 13:26:40

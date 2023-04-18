@@ -1,6 +1,7 @@
 package com.quesssystems.sistemato.beans.log;
 
 import com.quesssystems.sistemato.beans.automacao.Automacao;
+import com.quesssystems.sistemato.beans.token.Token;
 import util.ConversorUtil;
 
 import javax.persistence.*;
@@ -17,6 +18,10 @@ public class Log {
     @ManyToOne
     @JoinColumn(name="id_automacao", nullable=false)
     private Automacao automacao;
+
+    @ManyToOne
+    @JoinColumn(name="id_token", nullable=false)
+    private Token token;
 
     @Column(nullable = false)
     private Timestamp hora;
@@ -38,6 +43,14 @@ public class Log {
 
     public void setAutomacao(Automacao automacao) {
         this.automacao = automacao;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 
     public String getHora() {
