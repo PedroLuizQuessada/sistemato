@@ -99,8 +99,8 @@
             </div>
             <div class="text-center">
                 <a class="btn btn-primary m-2" data-toggle="modal" data-target="#consultarLogs" th:if="${automacao.getId() != null}">Consultar logs</a>
-                <br th:if="${numLogs} > 0">
-                <a th:if="${numLogs} > 0" class="btn btn-primary m-2" th:href="@{'/automacoes/apagarlogs/' + ${automacao.id}}">Apagar logs</a>
+                <br th:if="${adm && numLogs > 0}">
+                <a th:if="${adm && numLogs > 0}" class="btn btn-primary m-2" th:href="@{'/automacoes/apagarlogs/' + ${automacao.id}}">Apagar logs</a>
                 <br>
                 <button type="submit" class="btn btn-primary m-2">Salvar</button>
             </div>

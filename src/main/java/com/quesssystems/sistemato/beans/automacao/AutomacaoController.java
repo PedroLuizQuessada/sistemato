@@ -164,9 +164,6 @@ public class AutomacaoController {
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
             model.addAttribute("adm", usuarioLogado.isAdm());
-            if (!usuarioLogado.isAdm()) {
-                return "redirect:/automacoes/true?acessonegado";
-            }
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
@@ -223,8 +220,13 @@ public class AutomacaoController {
 
     @GetMapping("/automacoes/apagarlogs/{id}")
     public String apagarLogsAutomacao(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
         try {
-            model.addAttribute("adm", usuarioService.getUsuarioLogado().isAdm());
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+            if (!usuarioLogado.isAdm()) {
+                return "redirect:/automacoes/true?acessonegado";
+            }
         }
         catch (UsuarioNaoEncontradoException e) {
             return "redirect:/login?sessaoexpirada";
