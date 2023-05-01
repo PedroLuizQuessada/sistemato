@@ -1,5 +1,6 @@
 package com.quesssystems.sistemato.beans.token;
 
+import com.quesssystems.sistemato.beans.log.LogService;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioService;
 import com.quesssystems.sistemato.exceptions.TokenNaoEncontradoException;
@@ -24,10 +25,12 @@ public class TokenController {
     private String servidorContextPath;
     private final TokenService tokenService;
     private final UsuarioService usuarioService;
+    private final LogService logService;
 
-    public TokenController(TokenService tokenService, UsuarioService usuarioService) {
+    public TokenController(TokenService tokenService, UsuarioService usuarioService, LogService logService) {
         this.tokenService = tokenService;
         this.usuarioService = usuarioService;
+        this.logService = logService;
     }
 
     @GetMapping("/tokens/{ativo}")
@@ -131,6 +134,7 @@ public class TokenController {
         }
 
         try {
+            logService.updateByTokenDelete(tokenService.get(id));
             tokenService.delete(id);
             ra.addFlashAttribute("mensagemSucesso", String.format("O token %d foi deletado", id));
         }

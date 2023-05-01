@@ -20,7 +20,7 @@ public class Log {
     private Automacao automacao;
 
     @ManyToOne
-    @JoinColumn(name="id_token", nullable=false)
+    @JoinColumn(name="id_token")
     private Token token;
 
     @Column(nullable = false)

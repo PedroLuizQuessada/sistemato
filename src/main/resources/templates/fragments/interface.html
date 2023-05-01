@@ -118,6 +118,7 @@
         <li th:if="${adm && pagina == 'usuarios'}"><a style="text-decoration: none;" th:href="@{/usuarios/novo}">Adicionar usuário</a></li>
         <li th:if="${adm && pagina != 'tokens'}"><a style="text-decoration: none;" th:href="@{'/tokens/true'}">Tokens</a></li>
         <li th:if="${adm && pagina == 'tokens'}"><a style="text-decoration: none;" th:href="@{/tokens/novo}">Adicionar token</a></li>
+        <li th:if="${adm && pagina != 'pendencias'}"><a style="text-decoration: none;" th:href="@{/pendencias}">Pendências</a></li>
         <li><a style="text-decoration: none;" href="#" data-toggle="modal" data-target="#alterarSenha">Alterar senha</a></li>
         <li>
             <form th:action="@{/logout}" method="post">

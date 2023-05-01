@@ -17,13 +17,14 @@ public class UsarioRepositoryTests {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final String EMAIL = "pedroluiz.quessada@gmail.com";
+    private static final String SENHA = "mrlouiz12";
+
     @Test
     public void testInsert() {
-        String senha = "mrlouiz12";
-
         Usuario usuario = new Usuario();
-        usuario.setEmail("pedroluiz.quessada@gmail.com");
-        usuario.setSenha(SenhaUtil.criptografar(senha));
+        usuario.setEmail(EMAIL);
+        usuario.setSenha(SenhaUtil.criptografar(SENHA));
         usuario.setAdm(true);
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);

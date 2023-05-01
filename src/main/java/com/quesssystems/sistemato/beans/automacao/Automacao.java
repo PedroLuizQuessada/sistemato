@@ -1,6 +1,7 @@
 package com.quesssystems.sistemato.beans.automacao;
 
 import com.quesssystems.sistemato.beans.log.Log;
+import com.quesssystems.sistemato.beans.pendencia.Pendencia;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -48,8 +49,26 @@ public class Automacao {
     @Column(name = "horario_fim")
     private String horarioFim;
 
-    @OneToMany(mappedBy="automacao")
+    @Column(name = "orientacoes_pendencias")
+    private String orientacoesPendencias;
+
+    @Column(name = "estrutura")
+    private String estrutura;
+
+    @Column(name = "habilitar_texto")
+    private boolean habilitarTexto;
+
+    @Column(name = "orientacoes_texto")
+    private String orientacoesTexto;
+
+    @Column()
+    private String texto;
+
+    @OneToMany(mappedBy = "automacao")
     private Set<Log> logs;
+
+    @OneToMany(mappedBy = "automacao")
+    private Set<Pendencia> pendencias;
 
     public Integer getId() {
         return id;
@@ -151,8 +170,48 @@ public class Automacao {
         return horarioFim;
     }
 
+    public String getOrientacoesPendencias() {
+        return orientacoesPendencias;
+    }
+
+    public void setOrientacoesPendencias(String orientacoesPendencias) {
+        this.orientacoesPendencias = orientacoesPendencias;
+    }
+
+    public String getEstrutura() {
+        return estrutura;
+    }
+
+    public void setEstrutura(String estrutura) {
+        this.estrutura = estrutura;
+    }
+
     public void setHorarioFim(String horarioFim) {
         this.horarioFim = horarioFim;
+    }
+
+    public boolean isHabilitarTexto() {
+        return habilitarTexto;
+    }
+
+    public void setHabilitarTexto(boolean habilitarTexto) {
+        this.habilitarTexto = habilitarTexto;
+    }
+
+    public String getOrientacoesTexto() {
+        return orientacoesTexto;
+    }
+
+    public void setOrientacoesTexto(String orientacoesTexto) {
+        this.orientacoesTexto = orientacoesTexto;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Set<Log> getLogs() {
@@ -161,5 +220,13 @@ public class Automacao {
 
     public void setLogs(Set<Log> logs) {
         this.logs = logs;
+    }
+
+    public Set<Pendencia> getPendencias() {
+        return pendencias;
+    }
+
+    public void setPendencias(Set<Pendencia> pendencias) {
+        this.pendencias = pendencias;
     }
 }

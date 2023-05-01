@@ -1,6 +1,9 @@
 package com.quesssystems.sistemato.beans.token;
 
+import com.quesssystems.sistemato.beans.log.Log;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "token")
@@ -17,6 +20,9 @@ public class Token {
 
     @Column(nullable = false)
     private boolean ativo;
+
+    @OneToMany(mappedBy = "token")
+    private Set<Log> logs;
 
     public Integer getId() {
         return id;
@@ -48,5 +54,13 @@ public class Token {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Set<Log> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(Set<Log> logs) {
+        this.logs = logs;
     }
 }
