@@ -9,7 +9,6 @@ import com.quesssystems.sistemato.beans.log.Log;
 import com.quesssystems.sistemato.beans.log.LogRepository;
 import com.quesssystems.sistemato.beans.pendencia.Pendencia;
 import com.quesssystems.sistemato.beans.pendencia.PendenciaRepository;
-import com.quesssystems.sistemato.beans.pendencia.PendenciaService;
 import com.quesssystems.sistemato.beans.token.Token;
 import com.quesssystems.sistemato.beans.token.TokenRepository;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
@@ -38,16 +37,14 @@ public class MainController {
     private final LogRepository logRepository;
     private final TokenRepository tokenRepository;
     private final PendenciaRepository pendenciaRepository;
-    private final PendenciaService pendenciaService;
     private final EmailUtil emailUtil;
 
-    public MainController(UsuarioRepository usuarioRepository, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, PendenciaService pendenciaService, EmailUtil emailUtil) {
+    public MainController(UsuarioRepository usuarioRepository, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil) {
         this.usuarioRepository = usuarioRepository;
         this.automacaoRepository = automacaoRepository;
         this.logRepository = logRepository;
         this.tokenRepository = tokenRepository;
         this.pendenciaRepository = pendenciaRepository;
-        this.pendenciaService = pendenciaService;
         this.emailUtil = emailUtil;
     }
 
