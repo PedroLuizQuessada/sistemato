@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class AutomacaoController {
@@ -321,6 +322,11 @@ public class AutomacaoController {
             for (MultipartFile arquivo : arquivos) {
                 if (arquivo.getOriginalFilename() == null || (!arquivo.getOriginalFilename().endsWith(".xls") && !arquivo.getOriginalFilename().endsWith(".xlsx"))) {
                     ra.addFlashAttribute("mensagemErro", "Apenas planilhas Excel devem ser anexadas");
+                    model.addAttribute("pagina", "automacao");
+                    return String.format("redirect:/automacoes/consultar/%d", id);
+                }
+                if (!fileUtil.isNomeArquivoValido(Objects.requireNonNull(arquivo.getOriginalFilename()))) {
+                    ra.addFlashAttribute("mensagemErro", "Caracteres latinos não são permitidos nos nomes dos arquivos");
                     model.addAttribute("pagina", "automacao");
                     return String.format("redirect:/automacoes/consultar/%d", id);
                 }

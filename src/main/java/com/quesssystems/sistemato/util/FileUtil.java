@@ -117,6 +117,22 @@ public class FileUtil {
                 .body(resource);
     }
 
+    public boolean isNomeArquivoValido(String arquivo) {
+        if (arquivo.contains("ç") || arquivo.contains("Ç") || arquivo.contains("ã") || arquivo.contains("Ã") ||
+                arquivo.contains("á") || arquivo.contains("Á") || arquivo.contains("à") || arquivo.contains("À") ||
+                arquivo.contains("â") || arquivo.contains("Â") || arquivo.contains("é") || arquivo.contains("É") ||
+                arquivo.contains("è") || arquivo.contains("È") || arquivo.contains("ê") || arquivo.contains("Ê") ||
+                arquivo.contains("í") || arquivo.contains("Í") || arquivo.contains("ì") || arquivo.contains("Ì") ||
+                arquivo.contains("î") || arquivo.contains("Î") || arquivo.contains("õ") || arquivo.contains("Õ") ||
+                arquivo.contains("ó") || arquivo.contains("Ó") || arquivo.contains("ò") || arquivo.contains("Ò") ||
+                arquivo.contains("ô") || arquivo.contains("Ô") || arquivo.contains("ú") || arquivo.contains("Ú") ||
+                arquivo.contains("ù") || arquivo.contains("Ù") || arquivo.contains("û") || arquivo.contains("Û")) {
+            return false;
+        }
+
+        return true;
+    }
+
     private String getExtensaoArquivo(String nomeArquivo) {
         int index = nomeArquivo.lastIndexOf(".");
         return nomeArquivo.substring(index);
