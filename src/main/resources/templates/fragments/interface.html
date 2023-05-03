@@ -165,5 +165,20 @@
     </div>
 </div>
 
+<div class="container" th:fragment="loading">
+    <div class="modal fade" id="loading" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title text-center">Aguarde...</h4>
+                </div>
+                <div class="modal-body">
+                    <img th:src="@{/loading.gif}" alt="Carregando...">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

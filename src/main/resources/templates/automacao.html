@@ -162,7 +162,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Subir pendências" class="btn btn-primary">
+                        <input type="submit" data-toggle="modal" data-target="#loading" data-backdrop="static" data-keyboard="false" value="Subir pendências" class="btn btn-primary">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                     </div>
                 </form>
@@ -257,5 +257,6 @@
 </div>
 
 <div th:insert="fragments/interface :: alterarSenha"></div>
+<div th:insert="fragments/interface :: loading"></div>
 </body>
 </html>

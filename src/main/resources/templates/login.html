@@ -63,7 +63,7 @@
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <input type="submit" value="Recuperar senha" class="btn btn-primary">
+                            <input type="submit" data-toggle="modal" data-target="#loading" data-backdrop="static" data-keyboard="false" value="Recuperar senha" class="btn btn-primary">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
                     </form>
@@ -73,5 +73,6 @@
     </div>
 
 </div>
+<div th:insert="fragments/interface :: loading"></div>
 </body>
 </html>
