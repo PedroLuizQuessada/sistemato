@@ -13,13 +13,17 @@ import com.quesssystems.sistemato.beans.token.Token;
 import com.quesssystems.sistemato.beans.token.TokenRepository;
 import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioRepository;
+import com.quesssystems.sistemato.beans.usuario.UsuarioService;
+import com.quesssystems.sistemato.exceptions.UsuarioNaoEncontradoException;
 import com.quesssystems.sistemato.util.EmailUtil;
 import com.quesssystems.sistemato.util.SenhaUtil;
 import enums.StatusEnum;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -31,16 +35,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class MainController {
+public class MainController implements ErrorController {
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
     private final AutomacaoRepository automacaoRepository;
     private final LogRepository logRepository;
     private final TokenRepository tokenRepository;
     private final PendenciaRepository pendenciaRepository;
     private final EmailUtil emailUtil;
 
-    public MainController(UsuarioRepository usuarioRepository, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil) {
+    public MainController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil) {
         this.usuarioRepository = usuarioRepository;
+        this.usuarioService = usuarioService;
         this.automacaoRepository = automacaoRepository;
         this.logRepository = logRepository;
         this.tokenRepository = tokenRepository;
@@ -78,6 +84,21 @@ public class MainController {
         emailUtil.enviarEmail(email, "Nova senha para acesso ao Sistemato", String.format("<p>Sua senha para acesso ao Sistemato foi atualizada: <b>%s</b></p>", novaSenha));
 
         return "redirect:/login?senharecuperada";
+    }
+
+    @RequestMapping("/erro")
+    public String handleError(Model model) {
+        Usuario usuarioLogado;
+        try {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+        }
+        catch (UsuarioNaoEncontradoException e) {
+            return "redirect:/login?sessaoexpirada";
+        }
+
+        model.addAttribute("pagina", "erro");
+        return "erro";
     }
 
     @PostMapping("/recuperardados")
