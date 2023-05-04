@@ -1,6 +1,5 @@
 HELP.md
 target/
-arquivos/pendencias/*
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -32,4 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+src/main/resources/public/arquivos/pendencias/*
 #src/main/resources/application.properties
