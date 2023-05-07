@@ -6,7 +6,7 @@ import automacao.Requisicao;
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import com.quesssystems.sistemato.beans.automacao.AutomacaoRepository;
 import com.quesssystems.sistemato.beans.log.Log;
-import com.quesssystems.sistemato.beans.log.LogRepository;
+import com.quesssystems.sistemato.beans.log.LogService;
 import com.quesssystems.sistemato.beans.pendencia.Pendencia;
 import com.quesssystems.sistemato.beans.pendencia.PendenciaRepository;
 import com.quesssystems.sistemato.beans.token.Token;
@@ -39,17 +39,17 @@ public class MainController implements ErrorController {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
     private final AutomacaoRepository automacaoRepository;
-    private final LogRepository logRepository;
+    private final LogService logService;
     private final TokenRepository tokenRepository;
     private final PendenciaRepository pendenciaRepository;
     private final EmailUtil emailUtil;
     private final DatabaseUtil databaseUtil;
 
-    public MainController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil, DatabaseUtil databaseUtil) {
+    public MainController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, AutomacaoRepository automacaoRepository, LogService logService, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil, DatabaseUtil databaseUtil) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioService = usuarioService;
         this.automacaoRepository = automacaoRepository;
-        this.logRepository = logRepository;
+        this.logService = logService;
         this.tokenRepository = tokenRepository;
         this.pendenciaRepository = pendenciaRepository;
         this.emailUtil = emailUtil;
@@ -150,7 +150,7 @@ public class MainController implements ErrorController {
                 log.setToken(tokenRepository.findByCodigo(requisicao.getToken()));
                 log.setHora(databaseUtil.recuperarHoraAtualComFuso());
                 log.setMensagem(requisicao.getMensagem());
-                logRepository.save(log);
+                logService.save(log);
             }
         }
         return automacaoApi;

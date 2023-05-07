@@ -15,6 +15,7 @@ import org.springframework.test.annotation.Rollback;
 public class AutomacaoRepositoryTests {
     @Autowired
     private AutomacaoRepository automacaoRepository;
+    private static final Integer ID = 1;
     private static final String NOME = "Mensagens Whats";
     private static final String DESCRICAO = "Envio de mensagens de texto e imagens pelo WhatsApp";
     private static final boolean ATIVO = true;
@@ -36,6 +37,7 @@ public class AutomacaoRepositoryTests {
     @Test
     public void testInsert() {
         Automacao automacao = new Automacao();
+        automacao.setId(ID);
         automacao.setNome(NOME);
         automacao.setDescricao(DESCRICAO);
         automacao.setAtivo(ATIVO);

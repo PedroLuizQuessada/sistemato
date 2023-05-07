@@ -43,6 +43,15 @@ public class TokenService {
     }
 
     public void save(Token token) {
+        if (token.getId() == null) {
+            Integer idMax = tokenRepository.findMaxId();
+            if (idMax == null) {
+                idMax = 1;
+            } else {
+                idMax = idMax + 1;
+            }
+            token.setId(idMax);
+        }
         tokenRepository.save(token);
     }
 

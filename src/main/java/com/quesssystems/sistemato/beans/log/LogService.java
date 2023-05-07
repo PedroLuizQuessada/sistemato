@@ -40,6 +40,19 @@ public class LogService {
         }
     }
 
+    public void save(Log log) {
+        if (log.getId() == null) {
+            Integer idMax = logRepository.findMaxId();
+            if (idMax == null) {
+                idMax = 1;
+            } else {
+                idMax = idMax + 1;
+            }
+            log.setId(idMax);
+        }
+        logRepository.save(log);
+    }
+
     public void deleteByAutomacao(Automacao automacao) {
         List<Log> logs = listAllByAutomacao(automacao);
         logRepository.deleteAll(logs);

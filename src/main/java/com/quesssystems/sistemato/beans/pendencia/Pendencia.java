@@ -11,7 +11,6 @@ import java.util.Calendar;
 @Table(name = "pendencia")
 public class Pendencia {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne

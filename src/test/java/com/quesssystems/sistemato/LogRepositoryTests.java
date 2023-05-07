@@ -28,6 +28,7 @@ public class LogRepositoryTests {
 
     @Autowired
     private TokenRepository tokenRepository;
+    private static final Integer ID = 1;
     private static final int ID_AUTOMACAO = 1;
     private static final String TOKEN = "0d2d81d9-9bfe-47e2-9aec-37b56795e4b5";
 
@@ -44,6 +45,7 @@ public class LogRepositoryTests {
 
         for (int i = 0; i < NUM_LOGS; i++) {
             Log log = new Log();
+            log.setId(ID + i);
             log.setAutomacao(automacao);
             log.setToken(token);
             log.setHora(new Timestamp(System.currentTimeMillis()));

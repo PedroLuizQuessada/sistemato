@@ -44,6 +44,15 @@ public class UsuarioService {
     }
 
     public void save(Usuario usuario) {
+        if (usuario.getId() == null) {
+            Integer idMax = usuarioRepository.findMaxId();
+            if (idMax == null) {
+                idMax = 1;
+            } else {
+                idMax = idMax + 1;
+            }
+            usuario.setId(idMax);
+        }
         usuarioRepository.save(usuario);
     }
 

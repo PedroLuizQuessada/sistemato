@@ -10,7 +10,6 @@ import java.util.Set;
 @Table(name = "automacao")
 public class Automacao {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true, length = 45)

@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 public class UsarioRepositoryTests {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    private static final Integer ID = 1;
 
     private static final String EMAIL = "pedroluiz.quessada@gmail.com";
     private static final String SENHA = "mrlouiz12";
@@ -23,6 +24,7 @@ public class UsarioRepositoryTests {
     @Test
     public void testInsert() {
         Usuario usuario = new Usuario();
+        usuario.setId(ID);
         usuario.setEmail(EMAIL);
         usuario.setSenha(SenhaUtil.criptografar(SENHA));
         usuario.setAdm(true);

@@ -48,7 +48,18 @@ public class PendenciaService {
     }
 
     public void save(List<Pendencia> pendencias) {
-        pendenciaRepository.saveAll(pendencias);
+        for (Pendencia pendencia : pendencias) {
+            if (pendencia.getId() == null) {
+                Integer idMax = pendenciaRepository.findMaxId();
+                if (idMax == null) {
+                    idMax = 1;
+                } else {
+                    idMax = idMax + 1;
+                }
+                pendencia.setId(idMax);
+            }
+            pendenciaRepository.save(pendencia);
+        }
     }
 
     public List<Pendencia> listAll(Automacao automacao) {

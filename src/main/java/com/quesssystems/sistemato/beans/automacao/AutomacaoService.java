@@ -43,6 +43,15 @@ public class AutomacaoService {
     }
 
     public void save(Automacao automacao) {
+        if (automacao.getId() == null) {
+            Integer idMax = automacaoRepository.findMaxId();
+            if (idMax == null) {
+                idMax = 1;
+            } else {
+                idMax = idMax + 1;
+            }
+            automacao.setId(idMax);
+        }
         automacaoRepository.save(automacao);
     }
 

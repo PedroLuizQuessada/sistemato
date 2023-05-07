@@ -15,12 +15,14 @@ import org.springframework.test.annotation.Rollback;
 public class TokenRepositoryTests {
     @Autowired
     private TokenRepository tokenRepository;
+    private static final Integer ID = 1;
     private static final String NOME = "Máquina 1";
     private static final boolean ATIVO = true;
     private static final String CODIGO = "0d2d81d9-9bfe-47e2-9aec-37b56795e4b5";
     @Test
     public void testInsert() {
         Token token = new Token();
+        token.setId(ID);
         token.setNome(NOME);
         token.setAtivo(ATIVO);
         token.setCodigo(CODIGO);

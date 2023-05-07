@@ -22,6 +22,7 @@ public class PendenciaRepositoryTests {
     private PendenciaRepository pendenciaRepository;
     @Autowired
     private AutomacaoRepository automacaoRepository;
+    private static final int ID = 1;
     private static final int ID_AUTOMACAO = 1;
     private static final int NUM_PENDENCIAS = 8;
     private static final String NOME_ARQUIVO = "teste.xlsx";
@@ -34,6 +35,7 @@ public class PendenciaRepositoryTests {
 
         for (int i = 0; i < NUM_PENDENCIAS; i++) {
             Pendencia pendencia = new Pendencia();
+            pendencia.setId(ID + i);
             pendencia.setAutomacao(automacao);
             pendencia.setNomeArquivo(NOME_ARQUIVO);
             pendencia.setDataHoraUpload(new Timestamp(System.currentTimeMillis()));
