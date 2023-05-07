@@ -358,6 +358,34 @@ public class AutomacaoController {
         return String.format("redirect:/automacoes/consultar/%d", id);
     }
 
+    @PostMapping(value = "/automacoes/apagarpendencias")
+    public String apagarPendencias(@RequestParam("id") Integer id, @RequestParam("ids") String ids, Model model, RedirectAttributes ra) {
+        Usuario usuarioLogado;
+        try {
+            usuarioLogado = usuarioService.getUsuarioLogado();
+            model.addAttribute("adm", usuarioLogado.isAdm());
+        } catch (UsuarioNaoEncontradoException e) {
+            return "redirect:/login?sessaoexpirada";
+        }
+
+        if (ids.contains(";")) {
+            for (String idPendencia : ids.split(";")) {
+                try {
+                    pendenciaService.get(Integer.valueOf(idPendencia));
+                    pendenciaService.delete(Integer.valueOf(idPendencia));
+                } catch (PendenciaNaoEncontradaException e) {
+                    ra.addFlashAttribute("mensagemErro", e.getMessage());
+                    model.addAttribute("pagina", "automacoes");
+                    return "redirect:/automacoes/true";
+                }
+            }
+        }
+
+        ra.addFlashAttribute("mensagemSucesso", "Pendências selecionadas apagadas");
+        model.addAttribute("pagina", "automacao");
+        return String.format("redirect:/automacoes/consultar/%d", id);
+    }
+
     @GetMapping("/automacoes/excluirpendencia/{id}")
     public String excluirPendencia(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
         Usuario usuarioLogado;
