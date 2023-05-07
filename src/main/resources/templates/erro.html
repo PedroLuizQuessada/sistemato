@@ -13,7 +13,10 @@
         <br>
         <br>
         <br>
-        <h1>Ocorreu uma falha no sistema, favor contatar o administrador</h1>
+        <h1 th:if="${!adm}">Ocorreu uma falha no sistema, favor contatar o administrador</h1>
+        <h1 th:if="${adm}" th:text="${erroMensagem}"></h1>
+        <br th:if="${adm}">
+        <p th:if="${adm}" th:text="${erroStacktrace}"></p>
     </div>
 </div>
 

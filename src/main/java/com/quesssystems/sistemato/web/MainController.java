@@ -87,7 +87,7 @@ public class MainController implements ErrorController {
     }
 
     @RequestMapping("/erro")
-    public String handleError(Model model) {
+    public String handleError(HttpServletRequest request, Model model) {
         Usuario usuarioLogado;
         try {
             usuarioLogado = usuarioService.getUsuarioLogado();
@@ -97,7 +97,22 @@ public class MainController implements ErrorController {
             return "redirect:/login?sessaoexpirada";
         }
 
+        String erroMensagem;
+        StringBuilder stackTrace = new StringBuilder();
+        if ((Integer) request.getAttribute("javax.servlet.error.status_code") == 404) {
+            erroMensagem = "Página não encontrada";
+        }
+        else {
+            Exception obj = (Exception) request.getAttribute("org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR");
+            erroMensagem = obj.getMessage();
+            for (StackTraceElement e : obj.getStackTrace()) {
+                stackTrace.append(e.getClassName()).append(".").append(e.getMethodName()).append("(").append(e.getFileName()).append(":").append(e.getLineNumber()).append(")\n");
+            }
+        }
+
         model.addAttribute("pagina", "erro");
+        model.addAttribute("erroMensagem", erroMensagem);
+        model.addAttribute("erroStacktrace", stackTrace);
         return "erro";
     }
 
