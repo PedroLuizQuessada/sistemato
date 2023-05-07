@@ -3,12 +3,12 @@ package com.quesssystems.sistemato.beans.pendencia;
 import com.google.gson.Gson;
 import com.quesssystems.sistemato.beans.automacao.Automacao;
 import com.quesssystems.sistemato.exceptions.PendenciaNaoEncontradaException;
+import com.quesssystems.sistemato.util.DatabaseUtil;
 import com.quesssystems.sistemato.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -17,10 +17,12 @@ public class PendenciaService {
     private Integer numRegistrosPendencia;
     private final Gson gson = new Gson();
     private final FileUtil fileUtil;
+    private final DatabaseUtil databaseUtil;
     private final PendenciaRepository pendenciaRepository;
 
-    public PendenciaService(FileUtil fileUtil, PendenciaRepository pendenciaRepository) {
+    public PendenciaService(FileUtil fileUtil, DatabaseUtil databaseUtil, PendenciaRepository pendenciaRepository) {
         this.fileUtil = fileUtil;
+        this.databaseUtil = databaseUtil;
         this.pendenciaRepository = pendenciaRepository;
     }
 
@@ -31,7 +33,7 @@ public class PendenciaService {
                 Pendencia pendencia = new Pendencia();
                 pendencia.setAutomacao(automacao);
                 pendencia.setNomeArquivo(nomeArquivo);
-                pendencia.setDataHoraUpload(new Timestamp(System.currentTimeMillis()));
+                pendencia.setDataHoraUpload(databaseUtil.recuperarHoraAtualComFuso());
                 Map<String, String> mapa = new HashMap<>();
                 List<String> colunas = Arrays.asList(automacao.getEstrutura().split(";"));
                 for (String coluna : colunas) {

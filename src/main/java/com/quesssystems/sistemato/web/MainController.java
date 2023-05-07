@@ -15,6 +15,7 @@ import com.quesssystems.sistemato.beans.usuario.Usuario;
 import com.quesssystems.sistemato.beans.usuario.UsuarioRepository;
 import com.quesssystems.sistemato.beans.usuario.UsuarioService;
 import com.quesssystems.sistemato.exceptions.UsuarioNaoEncontradoException;
+import com.quesssystems.sistemato.util.DatabaseUtil;
 import com.quesssystems.sistemato.util.EmailUtil;
 import com.quesssystems.sistemato.util.SenhaUtil;
 import enums.StatusEnum;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +43,9 @@ public class MainController implements ErrorController {
     private final TokenRepository tokenRepository;
     private final PendenciaRepository pendenciaRepository;
     private final EmailUtil emailUtil;
+    private final DatabaseUtil databaseUtil;
 
-    public MainController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil) {
+    public MainController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, AutomacaoRepository automacaoRepository, LogRepository logRepository, TokenRepository tokenRepository, PendenciaRepository pendenciaRepository, EmailUtil emailUtil, DatabaseUtil databaseUtil) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioService = usuarioService;
         this.automacaoRepository = automacaoRepository;
@@ -52,6 +53,7 @@ public class MainController implements ErrorController {
         this.tokenRepository = tokenRepository;
         this.pendenciaRepository = pendenciaRepository;
         this.emailUtil = emailUtil;
+        this.databaseUtil = databaseUtil;
     }
 
     @GetMapping("")
@@ -146,7 +148,7 @@ public class MainController implements ErrorController {
                 Log log = new Log();
                 log.setAutomacao(automacao);
                 log.setToken(tokenRepository.findByCodigo(requisicao.getToken()));
-                log.setHora(new Timestamp(System.currentTimeMillis()));
+                log.setHora(databaseUtil.recuperarHoraAtualComFuso());
                 log.setMensagem(requisicao.getMensagem());
                 logRepository.save(log);
             }
@@ -170,7 +172,7 @@ public class MainController implements ErrorController {
                 Pendencia pendencia = pendenciaRepository.findById(requisicao.getIdPendencia()).get();
 
                 pendencia.setProcessado(true);
-                pendencia.setDataHoraProcessamento(new Timestamp(System.currentTimeMillis()));
+                pendencia.setDataHoraProcessamento(databaseUtil.recuperarHoraAtualComFuso());
                 pendenciaRepository.save(pendencia);
             }
         }
