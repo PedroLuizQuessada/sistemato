@@ -16,11 +16,11 @@
     <div th:insert="fragments/interface :: mensagens"></div>
 
     <div>
-        <table class="table table-bordered">
+        <table id="tabela1" class="table table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">E-mail</th>
+                <th onclick="clicar(0, 'tabela1')" class="text-center">ID<br><input type="number" id="input1" onkeyup="pesquisar()" placeholder="Pesquisar" class="form-control"></th>
+                <th onclick="clicar(1, 'tabela1')" class="text-center">E-mail<br><input type="text" id="input2" onkeyup="pesquisar()" placeholder="Pesquisar" class="form-control"></th>
                 <th></th>
             </tr>
             </thead>
@@ -43,5 +43,8 @@
 </div>
 
 <div th:insert="fragments/interface :: alterarSenha"></div>
+
+<div th:insert="fragments/interface :: pesquisarTabela"></div>
+<div th:insert="fragments/interface :: ordenarTabela"></div>
 </body>
 </html>

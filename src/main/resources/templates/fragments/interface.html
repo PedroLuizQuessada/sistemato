@@ -29,6 +29,14 @@
                 });
             });
         </script>
+
+        <script>
+            document.addEventListener("wheel", function(event){
+                if(document.activeElement.type === "number"){
+                    document.activeElement.blur();
+                }
+            });
+        </script>
     </th:block>
 
     <style th:fragment="css">
@@ -102,6 +110,16 @@
             color: white;
             font-size: 18px;
             text-decoration: none;
+        }
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
         }
     </style>
 </head>
@@ -179,6 +197,72 @@
         </div>
     </div>
 </div>
+
+<script th:fragment="pesquisarTabela">
+    function pesquisar() {
+        let input1, input2, filter1, filter2, table, tr, td1, td2, i, txtValue1, txtValue2;
+        input1 = document.getElementById("input1");
+        input2 = document.getElementById("input2");
+        filter1 = input1.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        table = document.getElementById("tabela1");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td1 = tr[i].getElementsByTagName("td")[0];
+            td2 = tr[i].getElementsByTagName("td")[1];
+
+            if (td1 && td2) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                if (txtValue1.toUpperCase().indexOf(filter1) > -1 && txtValue2.toUpperCase().indexOf(filter2) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<script th:fragment="ordenarTabela">
+    function clicar(n, idTabela) {
+        let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById(idTabela);
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
 
 </body>
 </html>

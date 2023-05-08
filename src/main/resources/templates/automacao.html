@@ -183,16 +183,16 @@
                 <form th:action="@{'/automacoes/apagarpendencias'}" method="post">
                     <input type="number" hidden name="id" th:value="${automacao.id}">
                     <input type="text" hidden name="ids" id="pendenciasSelecionadas">
-                    <table class="table table-bordered" th:if="${numPendencias} > 0" style="table-layout: fixed;">
+                    <table id="tabela1" class="table table-bordered" th:if="${numPendencias} > 0" style="table-layout: fixed;">
                         <thead class="thead-dark">
                         <tr>
                             <th></th>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Nome arquivo</th>
-                            <th class="text-center">Dados</th>
-                            <th class="text-center">Processado</th>
-                            <th class="text-center">Data hora upload</th>
-                            <th class="text-center">Data hora processado</th>
+                            <th onclick="clicar(1, 'tabela1')" class="text-center">ID<br><input type="number" id="input1" onkeyup="pesquisar1()" placeholder="Pesquisar" class="form-control"></th>
+                            <th onclick="clicar(2, 'tabela1')" class="text-center">Nome arquivo<br><input type="text" id="input2" onkeyup="pesquisar1()" placeholder="Pesquisar" class="form-control"></th>
+                            <th onclick="clicar(3, 'tabela1')" class="text-center">Dados<br><input type="text" id="input3" onkeyup="pesquisar1()" placeholder="Pesquisar" class="form-control"></th>
+                            <th onclick="clicar(4, 'tabela1')" class="text-center">Processado<br><input type="checkbox" id="input4" onclick="pesquisar1()"></th>
+                            <th onclick="clicar(5, 'tabela1')" class="text-center">Data hora upload<br><input type="date" id="input5" onkeyup="pesquisar1()" placeholder="Pesquisar" class="form-control"></th>
+                            <th onclick="clicar(6, 'tabela1')" class="text-center">Data hora processado<br><input type="date" id="input6" onkeyup="pesquisar1()" placeholder="Pesquisar" class="form-control"></th>
                             <th th:if="${adm}"></th>
                         </tr>
                         </thead>
@@ -234,13 +234,13 @@
                     <h4 class="modal-title text-center" th:if="${numLogs} > ${logs.size()}">Foram encontrados [[${numLogs}]] logs para essa automação. Exibindo os [[${logs.size()}]] logs mais recentes.</h4>
                 </div>
 
-                <table class="table table-bordered" th:if="${numLogs} > 0">
+                <table id="tabela2" class="table table-bordered" th:if="${numLogs} > 0">
                     <thead class="thead-dark">
                     <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Hora</th>
-                        <th class="text-center">Token</th>
-                        <th class="text-center">Mensagem</th>
+                        <th onclick="clicar(0, 'tabela2')" class="text-center">ID<br><input type="number" id="input7" onkeyup="pesquisar2()" placeholder="Pesquisar" class="form-control"></th>
+                        <th onclick="clicar(1, 'tabela2')" class="text-center">Hora<br><input type="date" id="input8" onkeyup="pesquisar2()" placeholder="Pesquisar" class="form-control"></th>
+                        <th onclick="clicar(2, 'tabela2')" class="text-center">Token<br><input type="text" id="input9" onkeyup="pesquisar2()" placeholder="Pesquisar" class="form-control"></th>
+                        <th onclick="clicar(3, 'tabela2')" class="text-center">Mensagem<br><input type="text" id="input10" onkeyup="pesquisar2()" placeholder="Pesquisar" class="form-control"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -278,5 +278,97 @@
         }
     }
 </script>
+
+<script>
+    function pesquisar1() {
+        let input1, input2, input3, input4, input5, input6, filter1, filter2, filter3, filter4, dia1, mes1, ano1, dia2, mes2, ano2, table, tr, td1, td2, td3, td4, td5, td6, i, txtValue1, txtValue2, txtValue3, txtValue4, txtValue5, txtValue6;
+        input1 = document.getElementById("input1");
+        input2 = document.getElementById("input2");
+        input3 = document.getElementById("input3");
+        input4 = document.getElementById("input4");
+        input5 = document.getElementById("input5");
+        input6 = document.getElementById("input6");
+        filter1 = input1.value.toUpperCase();
+        filter2 = input2.value.toUpperCase();
+        filter3 = input3.value.toUpperCase();
+        filter4 = input4.checked;
+        dia1 = input5.value.toUpperCase().substring(8);
+        mes1 = input5.value.toUpperCase().substring(5, 7);
+        ano1 = input5.value.toUpperCase().substring(0, 4);
+        dia2 = input6.value.toUpperCase().substring(8);
+        mes2 = input6.value.toUpperCase().substring(5, 7);
+        ano2 = input6.value.toUpperCase().substring(0, 4);
+        table = document.getElementById("tabela1");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td1 = tr[i].getElementsByTagName("td")[1];
+            td2 = tr[i].getElementsByTagName("td")[2];
+            td3 = tr[i].getElementsByTagName("td")[3];
+            td4 = tr[i].getElementsByTagName("td")[4];
+            td5 = tr[i].getElementsByTagName("td")[5];
+            td6 = tr[i].getElementsByTagName("td")[6];
+
+            if (td1 && td2 && td3 && td4 && td5 && td6) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue3 = td3.textContent || td3.innerText;
+                txtValue4 = td4.textContent || td4.innerText;
+                txtValue5 = td5.textContent || td5.innerText;
+                txtValue6 = td6.textContent || td6.innerText;
+                if (txtValue1.toUpperCase().indexOf(filter1) > -1 &&
+                    txtValue2.toUpperCase().indexOf(filter2) > -1 &&
+                    txtValue3.toUpperCase().indexOf(filter3) > -1 &&
+                    (txtValue4.toUpperCase() === "SIM" && filter4 === true || txtValue4.toUpperCase() === "NÃO" && filter4 === false) &&
+                    txtValue5.toUpperCase().indexOf(dia1) > -1 && txtValue5.toUpperCase().indexOf(mes1) > -1 && txtValue5.toUpperCase().indexOf(ano1) > -1 &&
+                    txtValue6.toUpperCase().indexOf(dia2) > -1 && txtValue6.toUpperCase().indexOf(mes2) > -1 && txtValue6.toUpperCase().indexOf(ano2) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+    function pesquisar2() {
+        let input7, input8, input9, input10, filter7, dia, mes, ano, filter9, filter10, table, tr, td7, td8, td9, td10, i, txtValue7, txtValue8, txtValue9, txtValue10;
+        input7 = document.getElementById("input7");
+        input8 = document.getElementById("input8");
+        input9 = document.getElementById("input9");
+        input10 = document.getElementById("input10");
+        filter7 = input7.value.toUpperCase();
+        dia = input8.value.toUpperCase().substring(8);
+        mes = input8.value.toUpperCase().substring(5, 7);
+        ano = input8.value.toUpperCase().substring(0, 4);
+        filter9 = input9.value.toUpperCase();
+        filter10 = input10.value.toUpperCase();
+        table = document.getElementById("tabela2");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td7 = tr[i].getElementsByTagName("td")[0];
+            td8 = tr[i].getElementsByTagName("td")[1];
+            td9 = tr[i].getElementsByTagName("td")[2];
+            td10 = tr[i].getElementsByTagName("td")[3];
+
+            if (td7 && td8 && td9 && td10) {
+                txtValue7 = td7.textContent || td7.innerText;
+                txtValue8 = td8.textContent || td8.innerText;
+                txtValue9 = td9.textContent || td9.innerText;
+                txtValue10 = td10.textContent || td10.innerText;
+                if (txtValue7.toUpperCase().indexOf(filter7) > -1 && txtValue8.toUpperCase().indexOf(dia) > -1 && txtValue8.toUpperCase().indexOf(mes) > -1 && txtValue8.toUpperCase().indexOf(ano) > -1 && txtValue9.toUpperCase().indexOf(filter9) > -1 && txtValue10.toUpperCase().indexOf(filter10) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<div th:insert="fragments/interface :: ordenarTabela"></div>
+
 </body>
 </html>
