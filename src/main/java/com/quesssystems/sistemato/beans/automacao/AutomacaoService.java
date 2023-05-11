@@ -42,7 +42,7 @@ public class AutomacaoService {
         automacaoRepository.deleteById(id);
     }
 
-    public void save(Automacao automacao) {
+    public Automacao save(Automacao automacao) {
         if (automacao.getId() == null) {
             Integer idMax = automacaoRepository.findMaxId();
             if (idMax == null) {
@@ -52,7 +52,7 @@ public class AutomacaoService {
             }
             automacao.setId(idMax);
         }
-        automacaoRepository.save(automacao);
+        return automacaoRepository.save(automacao);
     }
 
     public boolean isHorarioInvalido(String horario) {
@@ -60,5 +60,71 @@ public class AutomacaoService {
         int minuto = Integer.parseInt(horario.substring(3));
 
         return hora > 23 || minuto > 59;
+    }
+
+    public String recuperarTextoAutomacaoSalva(Automacao automacao) {
+        String texto = "A automação foi salva com sucesso<br><br>";
+        String textoDiasExecucao = "Dias configurados para execução: ";
+        String textoHorarioExecucao = "Horário configurado para execução: ";
+
+        if (automacao.isAtivo()) {
+            texto = texto + "Automação rodando<br>";
+        }
+        else {
+            texto = texto + "Automação parada<br>";
+            textoDiasExecucao = "Dias configurados para execução quando a automação for ativada: ";
+            textoHorarioExecucao = "Horário configurado para execução quando a automação for ativada: ";
+        }
+
+        if (!automacao.isDomingo() && !automacao.isSegunda() && !automacao.isTerca() && !automacao.isQuarta() &&
+                !automacao.isQuinta() && !automacao.isSexta() && !automacao.isSabado()) {
+            textoDiasExecucao = textoDiasExecucao + "nenhum";
+        }
+        else {
+            if (automacao.isDomingo()) {
+                textoDiasExecucao = textoDiasExecucao + "domingo, ";
+            }
+            if (automacao.isSegunda()) {
+                textoDiasExecucao = textoDiasExecucao + "segunda, ";
+            }
+            if (automacao.isTerca()) {
+                textoDiasExecucao = textoDiasExecucao + "terça, ";
+            }
+            if (automacao.isQuarta()) {
+                textoDiasExecucao = textoDiasExecucao + "quarta, ";
+            }
+            if (automacao.isQuinta()) {
+                textoDiasExecucao = textoDiasExecucao + "quinta, ";
+            }
+            if (automacao.isSexta()) {
+                textoDiasExecucao = textoDiasExecucao + "sexta, ";
+            }
+            if (automacao.isSabado()) {
+                textoDiasExecucao = textoDiasExecucao + "sábado, ";
+            }
+            textoDiasExecucao = textoDiasExecucao.substring(0, textoDiasExecucao.length() - 2);
+        }
+        texto = texto + textoDiasExecucao + "<br>";
+
+        if (automacao.getHorarioInicio() == null || automacao.getHorarioInicio().length() == 0) {
+            textoHorarioExecucao = textoHorarioExecucao + "das 00:00";
+        }
+        else {
+            textoHorarioExecucao = textoHorarioExecucao + "das " + automacao.getHorarioInicio();
+        }
+        if (automacao.getHorarioFim() == null || automacao.getHorarioFim().length() == 0) {
+            textoHorarioExecucao = textoHorarioExecucao + " até as 23:59";
+        }
+        else {
+            textoHorarioExecucao = textoHorarioExecucao + " até as " + automacao.getHorarioInicio();
+        }
+        texto = texto + textoHorarioExecucao + "<br>";
+
+        if (automacao.isHabilitarTexto()) {
+            String textoTextoApoio = automacao.getOrientacoesTexto() + " " + automacao.getTexto();
+            texto = texto + textoTextoApoio + "<br>";
+        }
+
+        return texto;
     }
 }

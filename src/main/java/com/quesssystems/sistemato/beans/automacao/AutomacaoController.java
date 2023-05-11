@@ -228,8 +228,7 @@ public class AutomacaoController {
         }
 
         try {
-            automacaoService.save(automacao);
-            ra.addFlashAttribute("mensagemSucesso", "A automação foi salva com sucesso");
+            ra.addFlashAttribute("mensagemSucesso", automacaoService.recuperarTextoAutomacaoSalva(automacaoService.save(automacao)));
         }
         catch (Exception e) {
             ra.addFlashAttribute("mensagemErro", String.format("O nome %s já está sendo usado", automacao.getNome()));
