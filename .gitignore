@@ -33,4 +33,4 @@ build/
 .vscode/
 
 src/main/resources/public/arquivos/pendencias/*
-#src/main/resources/application.properties
+src/main/resources/application.properties
